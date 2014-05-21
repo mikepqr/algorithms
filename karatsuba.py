@@ -1,6 +1,6 @@
 def karatsuba(x, y):
     '''
-    Perform Karatsuba multiplication of integers x and y.
+    Perform Karatsuba multiplication of positive integers x and y.
 
     The Karatsuba algorithm splits the two numbers to be multiplied into
     leading and trailing parts and expresses the desired product as a
@@ -73,7 +73,8 @@ def karatsuba(x, y):
 
 def naive_dc_multiply(x, y):
     '''
-    Perform naive divide-and-conquer multiplication of two integers x and y.
+    Perform naive divide-and-conquer multiplication of positive integers x and
+    y.
 
     Identical to Karatsuba multiplication, but without the trick to avoid the
     4th product of the divided numbers.
