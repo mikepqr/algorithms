@@ -35,7 +35,7 @@ def merge(s1, s2):
     s = []
     j, k = 0, 0
     while j < len(s1) and k < len(s2):
-        if s1[j] < s2[k]:
+        if s1[j] <= s2[k]:
             s.append(s1[j])
             j += 1
         else:
