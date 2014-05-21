@@ -2,28 +2,35 @@ def karatsuba(x, y):
     '''
     Perform Karatsuba multiplication on two positive integers x and y.
 
-    To multiply x = 1234 and y = 5678, we first split these numbers into x1 =
-    12, x2 = 34, y1 = 56, y2 = 78. In terms of x1 and x2, x = x1 * 100 + x2.
-    Generally, x = x1 * 10**(m2/2) + x2, where m2 is the number of trailing
-    zeros to pad x1 with (i.e. the length m2 of the number x2). Then
+    The Karatsuba algorithm splits the two numbers to be multiplied into
+    leading and trailing parts and expresses the desired product as a
+    non-obvious combination of the products of those parts. The products of
+    those parts are themselves computed by recursively calling Karatsuba until
+    the two numbers to be multiplied are small enough to use basic
+    multiplication.
 
-        xy = (x1 * 10**m2/2) + x2) * (y0 * 10**(m2/2) + y1)
-           = x1*y1 * 10**m2 + (x1*y2 + x2*y1) * 10**(m2/2) + x2*y2
+    To multiply x = 1234 and y = 5678, we first divide these numbers in some
+    way, e.g. into x1 = 12, x2 = 34, y1 = 56, y2 = 78. In terms of x1 and x2, x
+    = x1 * 100 + x2. Generally, x = x1 * 10**(m/2) + x2, where m is the
+    number of trailing zeros to pad x1 with (i.e. the length m of the number
+    x2). Then
 
-    Note: if x or y have an odd number of digits m, the optimal division for a
-    divide-and-conquer approach is m1 = (m+1)/2 and m2 = (m-1)/2
+        xy = (x1 * 10**m/2) + x2) * (y0 * 10**(m/2) + y1)
+           = x1*y1 * 10**m + (x1*y2 + x2*y1) * 10**(m/2) + x2*y2
 
-    The Karatsuba trick is to note that the x1*x2 + x2*y1 term can be written
-    in terms of two products already computed for the other two terms and only
-    one new product:
+    Note: if x or y have an even number of digits n, the optimal choice of m
+    (from the point of view of an efficient divide-and-conquer) is n/2, and x1
+    and x2 have the same length. If n is odd, the optimal choice of m is
+    (n-1)/2. In this case, x1 has length (n+1)/2.
+
+    The Karatsuba trick is to note that the x1*x2 + x2*y1 term above can be
+    written in terms of two products already computed for the other two terms
+    and only one new product:
 
         x1 y2 + x2 y1 = (x1 + x2)(y1 + y2) - x1 y1 - x2 y2
 
-    This observation reduces the number of products that must be computed from
-    4 to 3.
-
-    The algorithm calls itself recursively until it encounters the base case,
-    in which the longest of the two numbers it is passed is one digit long.
+    This observation reduces the number of products that must be computed to 3
+    from 4 (the "grade school algorithm").
 
     >>> karatsuba(2, 3)
     6
