@@ -21,7 +21,7 @@ def karatsuba(x, y):
     Note: if x or y have an even number of digits n, the optimal choice of m
     (from the point of view of an efficient divide-and-conquer) is n/2, and x1
     and x2 have the same length. If n is odd, the optimal choice of m is
-    (n-1)/2. In this case, x1 has length (n+1)/2.
+    about n/2, e.g. 
 
     The Karatsuba trick is to note that the x1*x2 + x2*y1 term above can be
     written in terms of two products already computed for the other two terms
@@ -40,33 +40,28 @@ def karatsuba(x, y):
     15248687336191143786500127010230L
     '''
 
-    xs = str(x)
-    ys = str(y)
-    mx, my = len(xs), len(ys)
-    m = max(mx, my)
-    if m == 1:
+    nx, ny = len(str(x)), len(str(y))
+    n = min(nx, ny)
+    if n == 1:
+        # Base case
         return x*y
+    # Split in half if even (or (n-1)/2 and (n+1)/2 if odd)
+    m = n//2
 
-    # Pad input to the same length by adding leading zeros
-    if mx < m:
-        xs = '0' * (m - mx) + xs
-    if my < m:
-        ys = '0' * (m - my) + ys
-
-    # Split into two chunks of length m1 and m2. // is integer divsion so:
-    # m1 = m/2 if n even, (m+1)/2 if odd
-    # m2 = m/2 if n even, (m-1)/2 if odd
-    m1 = (m + 1)//2
-    m2 = m//2
-    x1 = int(xs[0:m1])
-    x2 = int(xs[m1:])
-    y1 = int(ys[0:m1])
-    y2 = int(ys[m1:])
+    # Split into two chunks, second of which is of length m. E.g. if x = 12345
+    # and m = 2, make use of integer division //.
+    #   x1 = 12345//(10**2) = 123
+    # Then
+    #   x2 = 12345 % (12*(10**2)) = 45
+    x1 = x // (10**m)
+    x2 = x % (x1*(10**m))
+    y1 = y // (10**m)
+    y2 = y % (y1*(10**m))
 
     p1 = karatsuba(x1, y1)
     p2 = karatsuba(x2, y2)
     p3 = karatsuba(x1 + x2, y1 + y2)
-    result = p1 * 10**(2*m2) + (p3 - p2 - p1) * 10**m2 + p2
+    result = p1 * 10**(2*m) + (p3 - p2 - p1) * 10**m + p2
     return result
 
 
