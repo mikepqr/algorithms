@@ -1,6 +1,6 @@
 def karatsuba(x, y):
     '''
-    Perform Karatsuba multiplication on two decimal numbers x and y.
+    Perform Karatsuba multiplication on two positive integers x and y.
 
     To multiply x = 1234 and y = 5678, we first split these numbers into x1 =
     12, x2 = 34, y1 = 56, y2 = 78. In terms of x1 and x2, x = x1 * 100 + x2.
