@@ -64,6 +64,45 @@ def karatsuba(x, y):
     return p1 * 10**(2*m) + (p3 - p2 - p1) * 10**m + p2
 
 
+def gradeschool_multiply(x, y):
+    '''
+    Perform 'grade school' multiplication of two integers x and y.
+
+    Identical to Karatsuba multiplication, but without the trick to avoid the
+    4th product of the divided numbers.
+
+    >>> gradeschool_multiply(2, 3)
+    6
+    >>> gradeschool_multiply(1234, 5678)
+    7006652
+    >>> gradeschool_multiply(1234873409857345, 12348380987450934)
+    15248687336191143786500127010230L
+    '''
+    nx, ny = len(str(x)), len(str(y))
+    n = min(nx, ny)
+    if n == 1:
+        # Base case
+        return x*y
+    # Split in half if even (or (n-1)/2 and (n+1)/2 if odd)
+    m = n//2
+
+    # Split into two chunks, second of which is of length m. E.g. if x = 12345
+    # and m = 2, make use of integer division //.
+    #   x1 = 12345//(10**2) = 123
+    # Then
+    #   x2 = 12345 % (12*(10**2)) = 45
+    x1 = x // (10**m)
+    x2 = x % (x1*(10**m))
+    y1 = y // (10**m)
+    y2 = y % (y1*(10**m))
+
+    p1 = gradeschool_multiply(x1, y1)
+    p2 = gradeschool_multiply(x2, y2)
+    p3 = gradeschool_multiply(x1, y2)
+    p4 = gradeschool_multiply(x2, y1)
+    return p1 * 10**(2*m) + (p3 + p4) * 10**m + p2
+
+
 if __name__ == "__main__":
     import doctest
     doctest.testmod()
