@@ -1,6 +1,6 @@
 def karatsuba(x, y):
     '''
-    Perform Karatsuba multiplication on two positive integers x and y.
+    Perform Karatsuba multiplication of integers x and y.
 
     The Karatsuba algorithm splits the two numbers to be multiplied into
     leading and trailing parts and expresses the desired product as a
@@ -15,13 +15,13 @@ def karatsuba(x, y):
     number of trailing zeros to pad x1 with (i.e. the length m of the number
     x2). Then
 
-        xy = (x1 * 10**m/2) + x2) * (y0 * 10**(m/2) + y1)
-           = x1*y1 * 10**m + (x1*y2 + x2*y1) * 10**(m/2) + x2*y2
+        xy = (x1 * 10**(2m)) + x2) * (y0 * 10**m + y1)
+           = x1*y1 * 10**(2m) + (x1*y2 + x2*y1) * 10**m + x2*y2
 
     Note: if x or y have an even number of digits n, the optimal choice of m
     (from the point of view of an efficient divide-and-conquer) is n/2, and x1
     and x2 have the same length. If n is odd, the optimal choice of m is
-    about n/2, e.g. 
+    about n/2, e.g.
 
     The Karatsuba trick is to note that the x1*x2 + x2*y1 term above can be
     written in terms of two products already computed for the other two terms
@@ -61,8 +61,7 @@ def karatsuba(x, y):
     p1 = karatsuba(x1, y1)
     p2 = karatsuba(x2, y2)
     p3 = karatsuba(x1 + x2, y1 + y2)
-    result = p1 * 10**(2*m) + (p3 - p2 - p1) * 10**m + p2
-    return result
+    return p1 * 10**(2*m) + (p3 - p2 - p1) * 10**m + p2
 
 
 if __name__ == "__main__":
