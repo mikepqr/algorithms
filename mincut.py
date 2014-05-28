@@ -120,7 +120,8 @@ def minCut(gorig, verbose=False):
     '''
     n = len(gorig)
     min = n**2
-    for i in range(int(math.log(n) * n**2)):
+    trials = int(math.log(n) * n**2)
+    for i in range(trials):
         g = copy.deepcopy(gorig)
         k, cuts = randomContraction(g)
         if cuts < min:
