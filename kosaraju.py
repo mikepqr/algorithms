@@ -1,7 +1,7 @@
 from collections import Counter
 
 
-def readEdges(file="scc_tests/tc6.txt"):
+def readEdges(file="scc_tests/tc0.txt"):
     edges = {}
     with open(file, 'r') as f:
         for i, line in enumerate(f):
@@ -17,32 +17,32 @@ def reverseEdges(edges):
     return edges
 
 
-def edgesOfNode(edges, u):
-    return dict([(k, r) for k, r in edges.iteritems() if r[0] == u])
+def edgesToAdjacency(edges):
+    graph = {}
+    for i, edge in edges.iteritems():
+        graph.setdefault(edge[0], []).append(edge[1])
+    return graph
 
 
-def dfs(edges, i, explored, leader, f, s, t):
+def dfs(edges, adjacencyList, i, explored, leader, f, s, t):
     # s = most recent node from which dfs was initiated
     # t = number of nodes completely processed so far
     leader[i] = s
     explored[i] = True
 
-    # for each edge i,j beginning with i
-    for edge in edgesOfNode(edges, i).itervalues():
-        j = edge[1]
-        if not explored[j]:
-            f, t = dfs(edges, j, explored, leader, f, s, t)
+    if i in adjacencyList:
+        for j in adjacencyList[i]:
+            if not explored[j]:
+                f, t = dfs(edges, adjacencyList, j, explored, leader, f, s, t)
 
     # totally finished exploring node i
     t += 1
     f[i] = t
-    if t % 100 == 0:
-        print "Processed", t, "nodes"
 
     return f, t
 
 
-def dfsLoop(edges):
+def dfsLoop(edges, adjacencyList):
     t = 0
     n = 0
     for i in edges.itervalues():
@@ -57,40 +57,54 @@ def dfsLoop(edges):
 
     for i in range(n, 0, -1):
         if not explored[i]:
-            f, t = dfs(edges, i, explored, leader, f, i, t)
+            f, t = dfs(edges, adjacencyList, i, explored, leader, f, i, t)
 
     return f, leader
 
 
-def kosaraju(file="scc_tests/tc5.txt"):
-    # read edges
+def kosaraju(file="scc_tests/tc0.txt"):
     edges = readEdges(file=file)
-    print "Read file"
+    print "Read edges file"
 
-    # reverse edges
     edges = reverseEdges(edges)
     print "Reversed edges"
 
-    # call dfsLoop on edges to get finishing times
-    f, leader = dfsLoop(edges)
+    adjacencyList = edgesToAdjacency(edges)
+    print "Computed adjacency list of reversed edges"
+
+    f, leader = dfsLoop(edges, adjacencyList)
     print "Called dfsLoop to get finishing times"
 
-    # relabel edges
     for i, edge in edges.iteritems():
         edges[i] = (f[edge[0]], f[edge[1]])
     print "Relabelled edges"
 
-    # re-reverse edges
     edges = reverseEdges(edges)
     print "Reversed edges"
 
-    f, leader = dfsLoop(edges)
+    adjacencyList = edgesToAdjacency(edges)
+    print "Computed adjacency list of re-reversed edges"
+
+    f, leader = dfsLoop(edges, adjacencyList)
     print "Called dfsLoop to get SCCs"
 
-    # count occurences of each leader (i.e. size of groups)
     cnt = Counter()
     for l in leader.itervalues():
         cnt[l] += 1
     print "Accumulated leader counts to get SCC sizes"
 
     return cnt
+
+
+if __name__ == "__main__":
+    # Magic to set resources as generously as possible to avoid recursion limit
+    # and segfaults when memory runs out
+    import sys
+    sys.setrecursionlimit(2**20)
+    import resource
+    resource.setrlimit(resource.RLIMIT_STACK, (1.5*2**25, 1.5*2**25))
+
+    cnt = kosaraju(file="scc_tests/SCC.txt")
+
+    # Print comma-separated list of top 5 SCCs by size
+    ','.join([str(scc_size) for leader, scc_size in cnt.most_common()[0:5]])
