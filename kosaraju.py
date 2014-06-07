@@ -42,13 +42,17 @@ def dfs(edges, adjacencyList, i, discovered, leader, f, s, t):
     '''
     Given a graph (a dict of edges and a dict adjacency list), a starting
     node i, a parent node s (=i for initial call of dfs), and t (running count
-    of number of nodes completely explored, conduct recursive DFS on graph.
+    of number of nodes completely explored, conduct recursive DFS on graph,
+    returning rank order in which node i completely explored.
 
-    Updates the key i in dicts discovered (discovered flags), leader (id of
-    origin node from which node was discovered) and f (finishing time, i.e.
-    rank order in which paths from node fully explored).
+    Side-effects: updates the key i in these dicts
+     - discovered (discovered flag)
+     - leader (id of origin node from which node was discovered, i.e. starting
+       node for original call of dfs in dfsLoop)
+     - f (finishing time, i.e.  rank order in which paths from node fully
+       explored).
 
-    Returns f and t.
+    Returns t.
     '''
 
     # Mark i discovered
@@ -65,7 +69,7 @@ def dfs(edges, adjacencyList, i, discovered, leader, f, s, t):
             if not discovered[j]:
                 # Recursively DFS on graph using that destination as starting
                 # point
-                f, t = dfs(edges, adjacencyList, j, discovered, leader, f, s, t)
+                t = dfs(edges, adjacencyList, j, discovered, leader, f, s, t)
 
     # Have now totally finished exploring i and all nodes reachable from i.
     # Update running count of nodes completely explored, and finishing time of
@@ -73,7 +77,7 @@ def dfs(edges, adjacencyList, i, discovered, leader, f, s, t):
     t += 1
     f[i] = t
 
-    return f, t
+    return t
 
 
 def dfsLoop(edges, adjacencyList):
@@ -115,7 +119,7 @@ def dfsLoop(edges, adjacencyList):
             # Run DFS on graph using node i as starting point; keeping track of
             # discovered, leader, f, t; using i as leader for all nodes
             # discovered from this call
-            f, t = dfs(edges, adjacencyList, i, discovered, leader, f, i, t)
+            t = dfs(edges, adjacencyList, i, discovered, leader, f, i, t)
 
     return f, leader
 
