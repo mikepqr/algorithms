@@ -38,21 +38,21 @@ def edgesToAdjacency(edges):
     return graph
 
 
-def dfs(edges, adjacencyList, i, explored, leader, f, s, t):
+def dfs(edges, adjacencyList, i, discovered, leader, f, s, t):
     '''
     Given a graph (a dict of edges and a dict adjacency list), a starting
     node i, a parent node s (=i for initial call of dfs), and t (running count
     of number of nodes completely explored, conduct recursive DFS on graph.
 
-    Updates the key i in dicts explored (explored flags), leader (id of origin
-    node from which node was discovered) and f (finishing time, i.e. rank order
-    in which paths from node fully explored).
+    Updates the key i in dicts discovered (discovered flags), leader (id of
+    origin node from which node was discovered) and f (finishing time, i.e.
+    rank order in which paths from node fully explored).
 
     Returns f and t.
     '''
 
-    # Mark i explored
-    explored[i] = True
+    # Mark i discovered
+    discovered[i] = True
 
     # Leader of node i is s by definition of function spec
     leader[i] = s
@@ -61,11 +61,11 @@ def dfs(edges, adjacencyList, i, explored, leader, f, s, t):
     if i in adjacencyList:
         # For each destination of edges leaving i
         for j in adjacencyList[i]:
-            # If destination unexplored
-            if not explored[j]:
+            # If destination undiscovered
+            if not discovered[j]:
                 # Recursively DFS on graph using that destination as starting
                 # point
-                f, t = dfs(edges, adjacencyList, j, explored, leader, f, s, t)
+                f, t = dfs(edges, adjacencyList, j, discovered, leader, f, s, t)
 
     # Have now totally finished exploring i and all nodes reachable from i.
     # Update running count of nodes completely explored, and finishing time of
@@ -97,11 +97,11 @@ def dfsLoop(edges, adjacencyList):
     print "n =", n
 
     # initialize dictionaries
-    # explored = boolean dict of {node: explored flag}
+    # discovered = boolean dict of {node: discovered flag}
     # leader = dict of {node: origin node from which it was discovered}
     # f = dict of finishing times {node: rand order in which paths from node
     # fully explored
-    explored = dict(zip(range(1, n+1), [False]*n))
+    discovered = dict(zip(range(1, n+1), [False]*n))
     leader = dict(zip(range(1, n+1), [False]*n))
     f = dict(zip(range(1, n+1), [False]*n))
 
@@ -110,12 +110,12 @@ def dfsLoop(edges, adjacencyList):
 
     # For all nodes, counting down from node n to node 1
     for i in range(n, 0, -1):
-        # If node unexplored
-        if not explored[i]:
+        # If node undiscovered
+        if not discovered[i]:
             # Run DFS on graph using node i as starting point; keeping track of
-            # explored, leader, f, t; using i as leader for all nodes
+            # discovered, leader, f, t; using i as leader for all nodes
             # discovered from this call
-            f, t = dfs(edges, adjacencyList, i, explored, leader, f, i, t)
+            f, t = dfs(edges, adjacencyList, i, discovered, leader, f, i, t)
 
     return f, leader
 
