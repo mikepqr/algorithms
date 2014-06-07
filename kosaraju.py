@@ -45,7 +45,7 @@ def dfs(edges, adjacencyList, i, discovered, leader, f, s, t):
     of number of nodes completely explored, conduct recursive DFS on graph,
     returning rank order in which node i completely explored.
 
-    Side-effects: updates the key i in these dicts
+    Side-effects: updates the key i in these dicts:
      - discovered (discovered flag)
      - leader (id of origin node from which node was discovered, i.e. starting
        node for original call of dfs in dfsLoop)
@@ -173,7 +173,10 @@ def kosaraju(file="scc_tests/tc0.txt"):
     return cnt
 
 
-if __name__ == "__main__":
+def exercise():
+    '''
+    Solve Algorithms 1, exercise 4.
+    '''
     # Magic to set resources as generously as possible to avoid recursion limit
     # and segfaults when memory runs out
     import sys
@@ -185,4 +188,5 @@ if __name__ == "__main__":
 
     # Print comma-separated list of top 5 SCCs by size, as requested by
     # exercise.
-    ','.join([str(scc_size) for leader, scc_size in cnt.most_common()[0:5]])
+    print ','.join([str(scc_size) for leader, scc_size in
+                    cnt.most_common()[0:5]])
