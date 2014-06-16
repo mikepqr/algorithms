@@ -31,7 +31,7 @@ def exercise(test=None, verbose=False):
     for t in range(-10000, 10001):
         if verbose and t % 100 == 0:
             print t
-        for i in h.keys():
+        for i in h:
             if t - i in h and t - i != i:
                 hits += 1
                 break
