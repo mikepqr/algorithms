@@ -1,3 +1,29 @@
+'''
+Determines the shortest path from a node to all other nodes in a graph using
+Dijkstra's algorithm.
+
+The algorithm uses a list x containing processed nodes. Initially this list is
+just the node x (to which the distance is 0). For all edges beginning in x and
+ending outside x, calculate Dijkstra's greedy criterion a[v] + l_vw, where a[v]
+is the shortest path from s to v and l_vw is the length of the edge (v, w).
+Find the edge (v*, w*) that minimizes this criterion. The shortest path from s
+to w*, a[w*] is then given by a[v*] + l_v*w*. Add w* to x. Repeat until x
+contains all nodes in the graph.
+
+>>> test_path = 'dijkstra_tests/dijkstra_'
+>>> g = readWeightedGraph(test_path + 'tc1.txt')
+>>> a = dijkstra(g, '1')
+>>> a['4']
+2
+>>> dijkstra(readWeightedGraph(test_path + 'tc2.txt'), '1')['7']
+5
+>>> dijkstra(readWeightedGraph(test_path + 'tc3.txt'), '13')['5']
+26
+>>> dijkstra(readWeightedGraph(test_path + 'tc4.txt'), '28')['6']
+9
+'''
+
+
 def readWeightedGraph(file='dijkstra_tests/dijkstraData.txt'):
     '''
     Returns a dictionary adjacency list representation of a graph where nodes
@@ -30,16 +56,6 @@ def dijkstra(g, s):
     '''
     Uses Dijkstra's algorithm to compute length of shortest paths from s to
     all other nodes in graph g.
-
-    Dijkstra's algorithm uses a list x containing processed nodes. Initially
-    this list is just the node x (to which the distance is 0).
-
-    For all edges beginning in x and ending outside x, calculate Dijkstra's
-    greedy criterion a[v] + l_vw, where a[v] is the shortest path from s to v
-    and l_vw is the length of the edge (v, w). Find the edge (v*, w*) that
-    minimizes this criterion. The shortest path from s to w*, a[w*] is then
-    given by a[v*] + l_v*w*. Add w* to x. Repeat until x contains all nodes
-    in the graph.
     '''
     x = [s]
     a = dict(zip(g.keys(), [0]*len(g)))
@@ -47,8 +63,8 @@ def dijkstra(g, s):
 
     while True:
         # Initialize best to a large number that all paths guaranteed to be
-        # shorter than (all paths guaranteed to be no longer than lengths of
-        # all the edges
+        # shorter than (all paths guaranteed to be no longer than sum of
+        # lengths of all the edges)
         best = worstcase
 
         # For every node in the list of processed nodes
@@ -84,3 +100,8 @@ def exercise():
     targets = [7, 37, 59, 82, 99, 115, 133, 165, 188, 197]
     print ','.join([str(a[str(i)]) for i in targets])
     return a
+
+
+if __name__ == "__main__":
+    import doctest
+    doctest.testmod()
