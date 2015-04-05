@@ -1,5 +1,4 @@
 from collections import defaultdict
-from functools import reduce
 
 
 def read_weighted_edge_list(filename):
@@ -13,16 +12,6 @@ def read_weighted_edge_list(filename):
     return n, m, edges
 
 
-def get_longest_edge(g):
-    '''
-    Returns the longest edge in a list of edges, e.g.
-    >>> get_longest_edge([(1, 2, 4), (2, 3, 5), (1, 3, -9)])
-    (2, 3, 5)
-    '''
-    edges = convert_weighted_adjacency_list_to_edge_list(g)
-    return reduce(lambda x, y: x if x[2] > y[2] else y, edges)
-
-
 def convert_weighted_edge_list_to_adjacency_list(edges):
     g = defaultdict(list)
     for u, v, c in edges:
@@ -30,16 +19,6 @@ def convert_weighted_edge_list_to_adjacency_list(edges):
         g[v].append((u, c))
 
     return g
-
-
-def convert_weighted_adjacency_list_to_edge_list(g):
-    edges = []
-    for u, vcs in g.items():
-        for v, c in vcs:
-            if (v, u, c) not in edges:
-                edges.append((u, v, c))
-
-    return edges
 
 
 def get_prim_mst(edges, s=False):
@@ -60,7 +39,7 @@ def get_prim_mst(edges, s=False):
     nodes = set(g.keys())
     if not s:
         s = min(nodes)
-    longest_edge = get_longest_edge(g)[2]
+    longest_edge = max([c for u, v, c in edges])
 
     x = set([s])  # initialize list of processed nodes to be set containing s
     mst_edges = []  # this will accumulate list of edges in the MST
