@@ -58,12 +58,12 @@ def get_prim_mst(edges, s=False):
                 if e[0] not in x:
                     # If that edge is shorter than longest edge seen so far
                     if e[1] < best:
-                        # Record u, v, and cost
+                        # Record u, v, and cost of current leader
                         ustar = u
                         vstar = e[0]
                         best = e[1]
 
-        # Add destination of best edge to list of processed nodes
+        # Once out of for loop, leader is edge selected by Prim's algorithm
         x.add(vstar)
         mst_edges.append((ustar, vstar))
         total_cost += best
@@ -73,3 +73,13 @@ def get_prim_mst(edges, s=False):
             break
 
     return mst_edges, total_cost
+
+
+def test_get_prim_mst():
+    problem = read_weighted_edge_list('prim_tests/tc1.txt')[2]
+    assert get_prim_mst(problem)[1] == 7
+    problem = read_weighted_edge_list('prim_tests/tc2.txt')[2]
+    assert get_prim_mst(problem)[1] == 37
+    problem = read_weighted_edge_list('prim_tests/edges.txt')[2]
+    assert get_prim_mst(problem)[1] == -3612829
+    print "Solution to problem = {}".format(get_prim_mst(problem)[1])
