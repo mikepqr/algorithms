@@ -1,4 +1,5 @@
 algo1
 =====
 
-Implementations of algorithms discussed in the Roughgarden Coursera course, "Algorithms: Design and Analysis, Part 1"
+Implementations of algorithms discussed in the Roughgarden Coursera
+courses, "Algorithms: Design and Analysis" (parts 1 & 2).
