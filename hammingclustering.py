@@ -35,7 +35,7 @@ def hamming_nodes(ndim, d):
             yield int(''.join(map(str, i)), 2)
 
 
-def find_pairs(nodes, ndim, d, verbose=False):
+def find_pairs(nodes, ndim, d):
     '''
     Finds all pairs in the list of points nodes separated by Hamming distance
     d.
@@ -55,12 +55,14 @@ def find_pairs(nodes, ndim, d, verbose=False):
 
     If found, these nodes are a distance d apart.
 
+    The number of calculations is (ndim C d) * len(nodes), e.g. for ndim = 24,
+    d = 2 and len(nodes) = 2e5, you must check for the existence of 54865488
+    keys.
+
     For large lists of nodes, this is much quicker and more tractable than the
     O(N^2) pairwise distance calcuation (and subsequent sort) required to
     naively implement K-clustering.
     '''
-    if verbose:
-        print "ndim = {}, d = {}".format(ndim, d)
     pairs = set()
 
     # For all nodes with Hamming weight d
@@ -71,17 +73,13 @@ def find_pairs(nodes, ndim, d, verbose=False):
             # are a pair of nodes separated by d that should be added to the
             # list
             target = n ^ j
-            if verbose:
-                print "{:04b} XOR j = {:04b}".format(n, target)
             if target in nodes:
-                if verbose:
-                    print "{:04b} found!".format(n ^ j)
                 pairs.add((n, target) if n < target else (target, n))
 
     return pairs
 
 
-def hamming_clustering(nodes, min_distance, verbose=False):
+def hamming_clustering(nodes, min_distance):
     '''
     Performs clustering on a list of nodes whose position is expressed as a
     binary sequence in ndimensional space.
@@ -110,7 +108,7 @@ def hamming_clustering(nodes, min_distance, verbose=False):
     x = unionfind.UnionFind(nodes.keys())
 
     for d in range(1, min_distance):
-        pairs = find_pairs(nodes, ndim, d, verbose=verbose)
+        pairs = find_pairs(nodes, ndim, d)
         npairs = len(pairs)
         print "Found {} edges with length {}".format(npairs, d)
         for i, pair in enumerate(pairs):
