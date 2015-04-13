@@ -40,3 +40,34 @@ def kclustering(distances_unsorted, k):
             break
 
     return x, min_distance
+
+
+def test_kclustering():
+    n, distances = read_cluster_distances('kclustering_tests/tc1.txt')
+    for k, result in [(2, 6),
+                      (3, 5),
+                      (4, 2)]:
+        assert kclustering(distances, k)[1] == result
+
+    n, distances = read_cluster_distances('kclustering_tests/tc2.txt')
+    for k, result in [(2, 4472),
+                      (3, 3606),
+                      (4, 1414)]:
+        assert kclustering(distances, k)[1] == result
+
+    n, distances = read_cluster_distances('kclustering_tests/tc3.txt')
+    for k, result in [(10, 54),
+                      (9, 79),
+                      (8, 82),
+                      (7, 86),
+                      (6, 103),
+                      (5, 114),
+                      (4, 236),
+                      (3, 262),
+                      (2, 498)]:
+        assert kclustering(distances, k)[1] == result
+
+    n, distances = read_cluster_distances('kclustering_tests/clustering1.txt')
+    problem1_solution = kclustering(distances, 4)[1]
+    assert problem1_solution == 106
+    print problem1_solution
