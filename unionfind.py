@@ -66,7 +66,11 @@ class UnionFind(object):
     def union(self, node1, node2):
         head1 = self.nodes_to_head[node1]
         head2 = self.nodes_to_head[node2]
+
         if head1 != head2:
+            if len(self.head_to_nodes[head2]) > len(self.head_to_nodes[head1]):
+                head1, head2 = head2, head1
+
             # Update each node pointing to head2 such that it points to head1
             for node in self.head_to_nodes[head2]:
                 self.nodes_to_head[node] = head1
