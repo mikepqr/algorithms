@@ -23,16 +23,63 @@ def read_nodes(filename):
     return nodes
 
 
+def find_rightmost_01(y):
+    for i in range(len(y)-1, -1, -1):
+        if y[i:i+2] == [0, 1]:
+            return i
+    return -1
+
 def hamming_nodes(ndim, d):
     '''
-    Yields all nodes of Hamming weight d in ndim dimensions.
+    Returns all nodes of Hamming weight d in ndim dimensions.
+
+    Uses a method pinched from http://stackoverflow.com/a/27755751
+
+    Begin with a vector of ndim - d 0s and d 1s at the end (e.g. 0011 for
+    n = 4 and r = 2). Add this to the list of nodes.
+
+    Then, repeat the following procedure:
+
+        1. Find the rightmost sequence [0, 1] If there is no such one, we are
+        done.
+
+        2. Permute that 0 and 1. Add this to the list of nodes.
+
+        3. Bubble all 1s to the right of that sequence to the end of the
+        vector. Add this to the list of nodes.
+
+    Then use a itertools.groupby trick to remove all duplicate lists in the
+    list (cannot make a set of lists).
     '''
-    # Construct all ndim length combinatations of 0s and 1s
-    for i in itertools.product([0, 1], repeat=ndim):
-        # If combination has Hamming weight d (i.e. contains d 1s), yield it
-        if i.count(1) == d:
-            # Yield the integer representation
-            yield int(''.join(map(str, i)), 2)
+    nodes = []
+    x = (ndim - d) * [0] + d * [1]
+    nodes.append(x[:])  # always append a copy of x to prevent referencing
+
+    i = find_rightmost_01(x)
+    while i != -1:
+        # Permute that 0 and 1
+        x[i], x[i+1] = x[i+1], x[i]
+        nodes.append(x[:])
+
+        # Bubble all 1s to the right of that sequence to the end
+        bubbled = False
+        for j, v in enumerate(x[:i+1:-1]):
+            if v == 1:
+                x.append(x.pop(ndim - j - 1))
+                bubbled = True
+        if bubbled:
+            nodes.append(x[:])
+
+        i = find_rightmost_01(x)
+
+    # itertools.groupby to remove all duplicate lists in list
+    nodes = list(nodes for nodes, _ in itertools.groupby(nodes))
+
+    # convert all nodes to their integer representation
+    for i, n in enumerate(nodes):
+        nodes[i] = int(''.join(map(str, n)), 2)
+
+    return nodes
 
 
 def find_pairs(nodes, ndim, d):
