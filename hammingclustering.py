@@ -30,8 +30,9 @@ def hamming_nodes(ndim, d):
     # Construct all ndim length combinatations of 0s and 1s
     for i in itertools.product([0, 1], repeat=ndim):
         # If combination has Hamming weight d (i.e. contains d 1s), yield it
-        if ''.join(map(str, i)).count("1") == d:
-            yield i
+        if i.count(1) == d:
+            # Yield the integer representation
+            yield int(''.join(map(str, i)), 2)
 
 
 def find_pairs(nodes, ndim, d, verbose=False):
@@ -63,11 +64,7 @@ def find_pairs(nodes, ndim, d, verbose=False):
     pairs = set()
 
     # For all nodes with Hamming weight d
-    for i in hamming_nodes(ndim, d):
-        # Construct the integer representation
-        j = int(''.join(map(str, i)), 2)
-        if verbose:
-            print "Node with Hamming weight {} = {}".format(i, j)
+    for j in hamming_nodes(ndim, d):
         # For every node in nodes
         for n in nodes:
             # n^j is a distance d from n so if n^j is in nodes then n and n^j
