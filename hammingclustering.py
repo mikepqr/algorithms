@@ -118,8 +118,9 @@ def find_pairs(nodes, ndim, d):
             # are a pair of nodes separated by d that should be added to the
             # list
             target = n ^ j
-            if target in nodes:
-                pairs.add((n, target) if n < target else (target, n))
+            if n < target:
+                if target in nodes:
+                    pairs.add((n, target))
 
     return pairs
 
