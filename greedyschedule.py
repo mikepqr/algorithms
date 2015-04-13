@@ -24,7 +24,11 @@ def score_jobs(jobs):
 
 def sort_jobs(jobs):
     # Goal is to sort on score (decreasing), using weight as a tie-breaker
+
+    # Sort on weight first
     sorted_jobs = sorted(jobs, key=lambda x: x[0], reverse=True)
+
+    # Then sort on score
     sorted_jobs = sorted(sorted_jobs, key=lambda x: x[2], reverse=True)
     return sorted_jobs
 
