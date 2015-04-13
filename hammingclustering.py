@@ -1,4 +1,3 @@
-import itertools
 import unionfind
 
 
@@ -29,6 +28,7 @@ def find_rightmost_01(y):
             return i
     return -1
 
+
 def hamming_nodes(ndim, d):
     '''
     Returns all nodes of Hamming weight d in ndim dimensions.
@@ -47,9 +47,6 @@ def hamming_nodes(ndim, d):
 
         3. Bubble all 1s to the right of that sequence to the end of the
         vector. Add this to the list of nodes.
-
-    Then use a itertools.groupby trick to remove all duplicate lists in the
-    list (cannot make a set of lists).
     '''
     nodes = []
     x = (ndim - d) * [0] + d * [1]
@@ -57,11 +54,12 @@ def hamming_nodes(ndim, d):
 
     i = find_rightmost_01(x)
     while i != -1:
-        # Permute that 0 and 1
+        # Permute that 0 and 1 and add new node to list of candidates
         x[i], x[i+1] = x[i+1], x[i]
         nodes.append(x[:])
 
-        # Bubble all 1s to the right of that sequence to the end
+        # Bubble all 1s to the right of that sequence to the end and add new
+        # node to list of candidates
         bubbled = False
         for j, v in enumerate(x[:i+1:-1]):
             if v == 1:
@@ -72,14 +70,14 @@ def hamming_nodes(ndim, d):
 
         i = find_rightmost_01(x)
 
-    # itertools.groupby to remove all duplicate lists in list
-    nodes = list(nodes for nodes, _ in itertools.groupby(nodes))
-
-    # convert all nodes to their integer representation
-    for i, n in enumerate(nodes):
-        nodes[i] = int(''.join(map(str, n)), 2)
-
-    return nodes
+    # Convert list of nodes to list of strings of binary representation
+    # e.g. [[0, 1], [1, 0], [0, 1]] -> ['01', '10', '01']
+    nodes = [''.join(map(str, [k for k in n])) for n in nodes]
+    # Convert all nodes to int representation
+    # e.g. ['01', '10', '01'] -> [1, 2, 1]
+    nodes = map(lambda x: int(x, 2), nodes)
+    # Return deduplicated list
+    return set(nodes)
 
 
 def find_pairs(nodes, ndim, d):
