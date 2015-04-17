@@ -24,25 +24,26 @@ def read_knapsack(filename):
 def knapsack(W, items):
     '''
     Return the maximum possible value of the knapsack problem, i.e. the total
-    value of the items in the knapsack, where items have value v0, v1 .. vn and
-    weight w0, w1 .. wn, subject to the constraint that the sum of the weights
-    of the selected items must be no more than W.
+    value of the items in the knapsack, where the n items labelled 1 to n have
+    values v1, v2 .. vn and weight w1, w2 .. wn, subject to the constraint that
+    the sum of the weights of the selected items must be no more than W, the
+    capacity of the knapsack.
 
-    W is an integer capacity for the knapsack. items is a 2xN array
-    denoting the items that may be selected. The 0th element of each row is the
-    value of the item, and the first is the weight.
+    items is a 2xN array denoting the items that may be selected. The 0th
+    element of each row is the value of the item, and the first is the weight.
     '''
 
     n = len(items)
     # A[i, x] stores the solution to the optimal knapsack problem for items
-    # 0..i-1 and a knapsack of capacity x (-1 handles Python's 0-indexed
-    # arrays).
+    # 1..i inclusive, given a knapsack of capacity x. The items are labelled 1
+    # to n, but A also stores optimal values for the empty set of items (i = 0)
+    # and a zero capacity knapsack (W = 0), which are of course all zero.
     A = np.zeros((n+1, W+1), dtype=np.int)
 
     # A[0, x] = 0 for x = 0, 1, 2 .. W
     # i.e. populate the array A from bottom up
     for i in range(1, n+1):
-        # The value and weight of the current current item (-1 handles Python's
+        # The value and weight of the ith item in items (-1 handles Python's
         # 0-indexed arrays).
         vi = items[i-1, 0]
         wi = items[i-1, 1]
@@ -66,12 +67,11 @@ def knapsack_lowmem(W, items):
 
     n = len(items)
     # For the current value of i, A[x] stores the solution to the optimal
-    # knapsack problem for items 0..i-1 and a knapsack of capacity x (-1
-    # handles Python's 0-indexed arrays).
+    # knapsack problem for items 1..i inclusive, given a knapsack of capacity
+    # x.
     A = np.zeros(W+1, dtype=np.int)
     # For the current value of i, B[x] stores the solution to the optimal
-    # knapsack problem for items 0..i-2 and a knapsack of capacity x (-1
-    # handles Python's 0-indexed arrays).
+    # knapsack problem for items 1..i-1 and a knapsack of capacity x
     B = np.zeros(W+1, dtype=np.int)
 
     # A[0, x] = 0 for x = 0, 1, 2 .. W
@@ -94,16 +94,16 @@ def knapsack_recursive(W, items, A=None, B=None):
     '''
     As knapsack() but calculates A[n, W] with recursive calls. It therefore
     calculates only the optimal knapsack for those subproblems that are
-    strictly necessary to calculate the problem.
+    strictly necessary to calculate A[n, W], the final element of A.
 
-    The array B is a boolean nxW B[i, x] is True if the recursion has already
-    calculated the optimal knapsack for the subproblem for items[0:i] and w =
-    x. Therefore at any time np.sum(B) is the number of optimal knapsack
-    problems that have been solved.
+    The array B is a boolean nxW. B[i, x] is True if the recursion has already
+    calculated the optimal knapsack for the subproblem for items 1..i inclusive
+    and w = x.
 
-    For large problems, this can be << nW. E.g. for the file knapsack_big.txt,
-    where W=200,000 and n=2000, only 0.3% of the 4e8 subproblems need be
-    considered.
+    Therefore at any time np.sum(B) is the number of optimal knapsack problems
+    that have been solved.  For large problems, this can be << nW. E.g. for the
+    file knapsack_big.txt, where W=2e5 and n=2e3, only 0.3% of the 4e8
+    subproblems need be considered.
     '''
 
     i = len(items)
@@ -117,9 +117,9 @@ def knapsack_recursive(W, items, A=None, B=None):
         B[i, :] = True
         return A[i, W]
     else:
-        # If we've already calculated the optimal knapsack value for
-        # items[0:i-1], capacity W then that's one possible value for this
-        # problem
+        # If we've already calculated the optimal knapsack value for items
+        # 1..i-1 inclusive and capacity W then that's one of the two possible
+        # value for this problem
         if B[i-1, W]:
             term1 = A[i-1, W]
         # If not, calculate that optimal knapsack value
@@ -133,12 +133,12 @@ def knapsack_recursive(W, items, A=None, B=None):
 
         if wi <= W:
             # If we've already calculated the optimal knapsack value for
-            # items[0:i-1], capacity W-wi then that's one possible value for
-            # this problem
+            # items 1..i-1, capacity W-wi then that's the other possible value
+            # for this problem
             if B[i-1, W-wi]:
                 term2 = A[i-1, W-wi] + vi
-            # If not, calculate that optimal knapsack value plus current item
-            # value
+            # If not, calculate that optimal knapsack value and add the current
+            # item value
             else:
                 term2 = knapsack_recursive(W-wi, items[0:i-1], A, B) + vi
         else:
@@ -147,6 +147,7 @@ def knapsack_recursive(W, items, A=None, B=None):
         # The optimal knapsack for items[0:i], capacity W is the greater of
         # term1 and term2
         A[i, W] = max(term1, term2)
+        # Mark A[i, W] solved
         B[i, W] = True
         return A[i, W]
 
@@ -167,6 +168,9 @@ def test_knapsack():
 
 
 def solve_q2():
+    import sys
+    # Default recursion limit = 1e3
+    sys.setrecursionlimit(int(1e6))
     solution = 4243395
     W, n, items = read_knapsack('knapsack_tests/knapsack_big.txt')
     assert knapsack_recursive(W, items) == solution
