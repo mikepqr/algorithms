@@ -25,24 +25,23 @@ def convert_weighted_edge_list_to_adjacency_list(edges, directed=True):
 
 def floydwarshall(n, edges):
     g = convert_weighted_edge_list_to_adjacency_list(edges)
-    A = np.zeros((n+1, n, n), dtype=np.int) + 2147483647
+    A = np.zeros((n+1, n+1, n+1), dtype=np.int) + 200000
     for u, vs in g.items():
         for v in vs:
-            A[0, u-1, v[0]-1] = v[1]
-    for i in range(n):
+            A[0, u, v[0]] = v[1]
+    for i in range(1, n+1):
         A[0, i, i] = 0
 
-    # TODO explain range
     for k in range(1, n+1):
-        print k
-        for i in range(n):
-            for j in range(n):
-                A[k, i, j] = min(
-                    A[k-1, i, j],
-                    A[k-1, i, k-1] + A[k-1, k-1, j]
-                )
+        # Matrix-manipulation speedup:
+        #   X[i, k] + Y[k, j] = Z[i, j] if
+        #   Z = X[k, :] + A[:, k]_transpose
+        # Where the calculation of the matrix Z uses broadcasting rather than a
+        # double for loop
+        B = A[k-1, k, :] + A[k-1, :, k][np.newaxis].T
+        A[k, :, :] = np.minimum(A[k - 1, :, :], B)
 
-    for i in range(n):
+    for i in range(1, n+1):
         if A[n, i, i] < 0:
             return np.inf
     else:
