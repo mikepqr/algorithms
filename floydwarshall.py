@@ -1,6 +1,8 @@
 from collections import defaultdict
 import numpy as np
 
+BIG_INT = int(2**31 - 1)
+
 
 def read_weighted_edge_list(filename):
     edges = []
@@ -41,7 +43,7 @@ def floydwarshall(n, edges):
     # bit precision), and denotes the absence of a path between two nodes
     # (which is true for all pairs of nodes not connected by 1 edge, at the
     # beginning of the code).
-    A = np.zeros((n+1, n+1, n+1), dtype=np.int) + int(2**31 - 1)
+    A = np.zeros((n+1, n+1, n+1), dtype=np.int) + BIG_INT
     # Read in the edges.
     for u, vs in g.items():
         for v in vs:
@@ -71,7 +73,7 @@ def floydwarshall(n, edges):
     # shortest path is not defined).
     for i in range(1, n+1):
         if A[n, i, i] < 0:
-            return np.inf
+            return BIG_INT
     else:
         return np.min(A[n, :, :])
 
