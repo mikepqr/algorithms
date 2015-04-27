@@ -46,4 +46,4 @@ def floydwarshall(n, edges):
         if A[n, i, i] < 0:
             return np.inf
     else:
-        return np.min(A)
+        return np.min(A[n, :, :])
