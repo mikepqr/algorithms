@@ -30,18 +30,18 @@ def floydwarshall(n, edges):
     # bit precision), and denotes the absence of a path between two nodes
     # (which is true for all pairs of nodes not connected by 1 edge, at the
     # beginning of the code).
-    A = np.zeros((n+1, n+1, n+1), dtype=np.int) + BIG_INT
+    A = np.zeros((n+1, n+1), dtype=np.int) + BIG_INT
     # Read in the edges.
     for u, v, c in edges:
-            A[0, u, v] = c
+        A[u, v] = c
     # Nodes are connected to themselves.
     for i in range(1, n+1):
-        A[0, i, i] = 0
+        A[i, i] = 0
 
     # The Floyd Warshall algorithm considers subproblems of size k and solves
     # for the shortest path i, j with all internal nodes in the range 1...k
     # inclusive, i.e. k is the the maximum node id that can be used to
-    # construct a candidate path between i and j. The shorts path from i to j
+    # construct a candidate path between i and j. The shortest path from i to j
     # using nodes up to k is then the shorter of:
     #  1. The shortest path from i to j using nodes up to k - 1,
     #  2. The paths from i to k using nodes up to k - 1 + the path from k to j,
@@ -54,17 +54,17 @@ def floydwarshall(n, edges):
         #   Z = X[k, :] + Y[:, k]_transpose
         # Where the calculation of the matrix Z uses broadcasting rather than a
         # double for loop. The (n+1, n+1) array B is then case 2 above
-        B = A[k-1, k, :] + A[k-1, :, k][np.newaxis].T
-        A[k, :, :] = np.minimum(A[k - 1, :, :], B)
+        B = A[k, :] + A[:, k][np.newaxis].T
+        A = np.minimum(A, B)
 
     # Floyd Warshall has at least one negative number on the leading diagonal
     # if a negative weight closed cycle was found (in which case the minimum
     # shortest path is not defined).
     for i in range(1, n+1):
-        if A[n, i, i] < 0:
+        if A[i, i] < 0:
             return BIG_INT
     else:
-        return np.min(A[n, :, :])
+        return np.min(A)
 
 
 def test_floydwarshall():
