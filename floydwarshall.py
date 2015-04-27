@@ -46,12 +46,12 @@ def floydwarshall(n, edges):
     #  1. The shortest path from i to j using nodes up to k - 1,
     #  2. The paths from i to k using nodes up to k - 1 + the path from k to j,
     #     using nodes up to k - 1
-    # Since the two subproblems in case 2 are themselves optimal, this is a
-    # recurcsion.
+    # The two subproblems in case 2 are themselves optimal solutions, so this
+    # is a recursive algorithm
     for k in range(1, n+1):
         # Matrix-manipulation trick:
         #   X[i, k] + Y[k, j] = Z[i, j] if
-        #   Z = X[k, :] + A[:, k]_transpose
+        #   Z = X[k, :] + Y[:, k]_transpose
         # Where the calculation of the matrix Z uses broadcasting rather than a
         # double for loop. The (n+1, n+1) array B is then case 2 above
         B = A[k-1, k, :] + A[k-1, :, k][np.newaxis].T
@@ -79,10 +79,13 @@ def test_floydwarshall():
 def solve_assignment4():
     n, m, edges = read_weighted_edge_list('apsp_tests/g1.txt')
     g1_solution = floydwarshall(n, edges)
+    print g1_solution
     n, m, edges = read_weighted_edge_list('apsp_tests/g2.txt')
     g2_solution = floydwarshall(n, edges)
+    print g2_solution
     n, m, edges = read_weighted_edge_list('apsp_tests/g3.txt')
     g3_solution = floydwarshall(n, edges)
+    print g3_solution
 
     solution = min(g1_solution, g2_solution, g3_solution)
     assert solution == -19
