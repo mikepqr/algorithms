@@ -71,6 +71,28 @@ def floydwarshall(n, edges):
     # shortest path is not defined).
     for i in range(1, n+1):
         if A[n, i, i] < 0:
-            return -np.inf
+            return np.inf
     else:
         return np.min(A[n, :, :])
+
+
+def test_floydwarshall():
+    n, m, edges = read_weighted_edge_list('apsp_tests/tc1.txt')
+    assert floydwarshall(n, edges) == -10003
+    n, m, edges = read_weighted_edge_list('apsp_tests/tc2.txt')
+    assert floydwarshall(n, edges) == -6
+    n, m, edges = read_weighted_edge_list('apsp_tests/tc3.txt')
+    assert floydwarshall(n, edges) == np.inf
+
+
+def solve_assignment4():
+    n, m, edges = read_weighted_edge_list('apsp_tests/g1.txt')
+    g1_solution = floydwarshall(n, edges)
+    n, m, edges = read_weighted_edge_list('apsp_tests/g2.txt')
+    g2_solution = floydwarshall(n, edges)
+    n, m, edges = read_weighted_edge_list('apsp_tests/g3.txt')
+    g3_solution = floydwarshall(n, edges)
+
+    solution = min(g1_solution, g2_solution, g3_solution)
+    assert solution == -19
+    print solution
