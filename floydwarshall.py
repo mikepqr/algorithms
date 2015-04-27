@@ -51,10 +51,10 @@ def floydwarshall(n, edges):
     for k in range(1, n+1):
         # Matrix-manipulation trick:
         #   X[i, k] + Y[k, j] = Z[i, j] if
-        #   Z = X[k, :] + Y[:, k]_transpose
+        #   Z = X[:, k]_T + Y[k, :]
         # Where the calculation of the matrix Z uses broadcasting rather than a
         # double for loop. The (n+1, n+1) array B is then case 2 above
-        B = A[k, :] + A[:, k][np.newaxis].T
+        B = A[:, k][np.newaxis].T + A[k, :]
         A = np.minimum(A, B)
 
     # Floyd Warshall has at least one negative number on the leading diagonal
