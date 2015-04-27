@@ -3,7 +3,6 @@ import numpy as np
 
 BIG_INT = int(2**31 - 1)
 
-
 def read_weighted_edge_list(filename):
     edges = []
     with open(filename, 'r') as f:
@@ -52,13 +51,16 @@ def floydwarshall(n, edges):
     for i in range(1, n+1):
         A[0, i, i] = 0
 
-    # The Floyd Warshall algorithm considers subproblems of size k, where k is
-    # the maximum number of edges that can be used to build a path from node i
-    # to j. The best possible path from i to j using up to k edges is then the
-    # better of:
-    #  1. The shortest path from i to j using up to k - 1 edges, and
-    #  2. The paths from i to w using up to k - 1 edges + the path from w to j,
-    #     for all nodes w that have edges leading directly to j
+    # The Floyd Warshall algorithm considers subproblems of size k and solves
+    # for the shortest path i, j with all internal nodes in the range 1...k
+    # inclusive, i.e. k is the the maximum node id that can be used to
+    # construct a candidate path between i and j The best possible path from i
+    # to j using up to k edges is then the better of:
+    #  1. The shortest path from i to j using nodes up to k - 1,
+    #  2. The paths from i to k using nodes up to k - 1 + the path from k to j,
+    #     using nodes up to k - 1
+    # Since the two subproblems in case 2 are themselves optimal, this is a
+    # recurcsion.
     for k in range(1, n+1):
         # Matrix-manipulation trick:
         #   X[i, k] + Y[k, j] = Z[i, j] if
