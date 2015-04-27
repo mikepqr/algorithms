@@ -1,7 +1,7 @@
-from collections import defaultdict
 import numpy as np
 
 BIG_INT = int(2**31 - 1)
+
 
 def read_weighted_edge_list(filename):
     edges = []
@@ -14,23 +14,11 @@ def read_weighted_edge_list(filename):
     return n, m, edges
 
 
-def convert_weighted_edge_list_to_adjacency_list(edges, directed=True):
-    g = defaultdict(list)
-    for u, v, c in edges:
-        g[u].append((v, c))
-        if not directed:
-            g[v].append((u, c))
-
-    return g
-
-
 def floydwarshall(n, edges):
     '''
     Returns the minimum shortest path in a directed graph with n nodes and edge
     list edges. Uses the Floyd Warshall algorithm.
     '''
-    g = convert_weighted_edge_list_to_adjacency_list(edges)
-
     # A is an n+1 x n+1 x n+1 array. The first dimension is indexed by k. Each
     # n+1 x n+1 array at each k is the minimum shortest path from node i to
     # node j using k or fewer edges. The values for i = 0 or j = 0 are
@@ -44,9 +32,8 @@ def floydwarshall(n, edges):
     # beginning of the code).
     A = np.zeros((n+1, n+1, n+1), dtype=np.int) + BIG_INT
     # Read in the edges.
-    for u, vs in g.items():
-        for v in vs:
-            A[0, u, v[0]] = v[1]
+    for u, v, c in edges:
+            A[0, u, v] = c
     # Nodes are connected to themselves.
     for i in range(1, n+1):
         A[0, i, i] = 0
