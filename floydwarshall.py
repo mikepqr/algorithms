@@ -73,7 +73,7 @@ def test_floydwarshall():
     n, m, edges = read_weighted_edge_list('apsp_tests/tc2.txt')
     assert floydwarshall(n, edges) == -6
     n, m, edges = read_weighted_edge_list('apsp_tests/tc3.txt')
-    assert floydwarshall(n, edges) == np.inf
+    assert floydwarshall(n, edges) == BIG_INT
 
 
 def solve_assignment4():
