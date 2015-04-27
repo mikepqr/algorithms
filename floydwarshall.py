@@ -41,7 +41,7 @@ def floydwarshall(n, edges):
     # The Floyd Warshall algorithm considers subproblems of size k and solves
     # for the shortest path i, j with all internal nodes in the range 1...k
     # inclusive, i.e. k is the the maximum node id that can be used to
-    # construct a candidate path between i and j. The shorts path from i to j 
+    # construct a candidate path between i and j. The shorts path from i to j
     # using nodes up to k is then the shorter of:
     #  1. The shortest path from i to j using nodes up to k - 1,
     #  2. The paths from i to k using nodes up to k - 1 + the path from k to j,
