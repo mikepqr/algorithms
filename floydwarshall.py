@@ -49,20 +49,20 @@ def floydwarshall(n, edges):
     # The two subproblems in case 2 are themselves optimal solutions, so this
     # is a recursive algorithm
     for k in range(1, n+1):
-        # Matrix-manipulation trick:
+        # Broadcasting outer operation trick:
         #   X[i, k] + Y[k, j] = Z[i, j] if
         #   Z = X[:, k]_T + Y[k, :]
         # Where the calculation of the matrix Z uses broadcasting rather than a
-        # double for loop. The (n+1, n+1) array B is then case 2 above
-        B = A[:, k][np.newaxis].T + A[k, :]
+        # double for loop. To take the transpose of a 1-D vector x in numpy,
+        # x[:, np.newaxis]. The (n+1, n+1) array B is then case 2 above
+        B = A[:, k, np.newaxis] + A[k, :]
         A = np.minimum(A, B)
 
     # Floyd Warshall has at least one negative number on the leading diagonal
     # if a negative weight closed cycle was found (in which case the minimum
     # shortest path is not defined).
-    for i in range(1, n+1):
-        if A[i, i] < 0:
-            return BIG_INT
+    if np.any(np.diag(A) < 0):
+        return BIG_INT
     else:
         return np.min(A)
 
