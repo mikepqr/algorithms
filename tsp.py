@@ -31,9 +31,10 @@ def tsp(nodes):
         print m
         for s in itertools.combinations(range(1, n), m-1):
             s = (0,) + s
+            this_bintuple = bintuple(s)
             for j in s[1:]:
-                A[bintuple(s), j] = min(
-                    [A[bintuple(s) - 2**(j-1), k] + C[k, j]
+                A[this_bintuple, j] = min(
+                    [A[this_bintuple - 2**(j-1), k] + C[k, j]
                      for k in s if k != j]
                 )
 
@@ -52,4 +53,5 @@ def test_tsp():
 def solve_week5():
     n, nodes = read_tsp('tsp_tests/tsp.txt')
     l = tsp(nodes)
+    assert l == 26442
     return int(l)
