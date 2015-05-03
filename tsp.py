@@ -53,6 +53,6 @@ def test_tsp():
 
 def solve_week5():
     n, nodes = read_tsp('tsp_tests/tsp.txt')
-    l = tsp(nodes)
+    l = int(tsp(nodes))
     assert l == 26442
-    return int(l)
+    return l
