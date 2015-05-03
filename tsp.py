@@ -1,29 +1,55 @@
+import itertools
 import numpy as np
 from scipy import spatial
 
 
 def read_tsp(filename):
-    points = []
+    nodes = []
     with open(filename, 'r') as f:
         n = int(f.readline())
-        points = np.zeros((n, 2))
+        nodes = np.zeros((n, 2))
         for i, l in enumerate(f):
-            points[i, :] = map(int, l.split())
-    return n, points
+            nodes[i, :] = map(float, l.split())
+    return n, nodes
 
 
-def calc_euclidian_distances(points):
-    return spatial.distance.squareform(spatial.distance.pdist(points))
+def calc_euclidian_distances(nodes):
+    return spatial.distance.squareform(spatial.distance.pdist(nodes))
 
 
-def tsp(edges):
-    pass
+def bintuple(s):
+    return sum([2**(i-1) for i in s if i > 0])
+
+
+def tsp(nodes):
+    n = len(nodes)
+    C = calc_euclidian_distances(nodes)
+    A = np.zeros((1 + bintuple(range(1, n)), n)) + np.inf
+    A[bintuple([0]), 0] = 0
+
+    for m in range(2, n+1):
+        print m
+        for s in itertools.combinations(range(1, n), m-1):
+            s = (0,) + s
+            for j in s[1:]:
+                A[bintuple(s), j] = min(
+                    [A[bintuple(s) - 2**(j-1), k] + C[k, j]
+                     for k in s if k != j]
+                )
+
+    return min([A[bintuple(s), j] + C[j, 0] for j in range(1, n)])
 
 
 def test_tsp():
-    linearpath = read_tsp('tsp_tests/linearpath.txt')
-    assert tsp(linearpath) == 12
-    rectangularpath = read_tsp('tsp_tests/rectangularpath.txt')
-    assert tsp(rectangularpath) == 10
-    testpath = read_tsp('tsp_tests/testpath.txt')
-    assert tsp(testpath) == 3.50116
+    n, linearnodes = read_tsp('tsp_tests/linearpath.txt')
+    assert tsp(linearnodes) == 12
+    n, rectangularnodes = read_tsp('tsp_tests/rectangularpath.txt')
+    assert tsp(rectangularnodes) == 10
+    n, testnodes = read_tsp('tsp_tests/testpath.txt')
+    assert tsp(testnodes) == 3.50116
+
+
+def solve_week5():
+    n, nodes = read_tsp('tsp_tests/tsp.txt')
+    l = tsp(nodes)
+    return int(l)
