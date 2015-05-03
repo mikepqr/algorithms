@@ -33,8 +33,9 @@ def tsp(nodes):
             s = (0,) + s
             this_bintuple = bintuple(s)
             for j in s[1:]:
+                last_bintuple = this_bintuple - 2**(j-1)
                 A[this_bintuple, j] = min(
-                    [A[this_bintuple - 2**(j-1), k] + C[k, j]
+                    [A[last_bintuple, k] + C[k, j]
                      for k in s if k != j]
                 )
 
@@ -47,7 +48,7 @@ def test_tsp():
     n, rectangularnodes = read_tsp('tsp_tests/rectangularpath.txt')
     assert tsp(rectangularnodes) == 10
     n, testnodes = read_tsp('tsp_tests/testpath.txt')
-    assert tsp(testnodes) == 3.50116
+    assert tsp(testnodes) == 3.5011560715090897
 
 
 def solve_week5():
