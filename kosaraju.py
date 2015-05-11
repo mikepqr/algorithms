@@ -131,7 +131,7 @@ def kosaraju(edges):
     Components of a graph, i.e. the components of a graph within which all
     nodes can be reached from all other nodes.
 
-    The algorithm works by running dfsLoop on the reversed graph, with aribrary
+    The algorithm works by running dfsLoop on the reversed graph, with abitrary
     ordering. This yields a finishing times, i.e. 'magic ordering' for the
     subsequent call of dfsLoop on the unreversed graph. This ordering
     guarantees that each call of dfs within dfsLoop discovers all members of a

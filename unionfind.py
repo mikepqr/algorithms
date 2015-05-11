@@ -11,7 +11,7 @@ class UnionFind(object):
     >>> x.get_nodes_of_head('B')
     ['B']
 
-    i.e. Every nodeect is its own head (i.e. in a cluster of size 1) at
+    i.e. Every node is its own head (i.e. in a cluster of size 1) at
     instantiation. The union operation:
 
     >>> x.union('A', 'B')
@@ -25,9 +25,9 @@ class UnionFind(object):
     ['A', 'C', 'D', 'E']
 
     Internally, self.nodes_to_head is a dictionary in which the value for each
-    nodeect is the head to which it points. self.head_to_nodes is a dictionary
-    in which the value for each head is the list of nodeects to which it
-    points. Imagine two clusters, ABC and DE. Then:
+    node is the head to which it points. self.head_to_nodes is a dictionary in
+    which the value for each head is the list of nodes to which it points.
+    Imagine two clusters, ABC and DE. Then:
 
         nodes_to_head[A] = A
         nodes_to_head[B] = A
