@@ -94,10 +94,12 @@ def dfsLoop(edges, adjacencyList):
 
     # count number of nodes in graph
     n = 0
-    for i in edges.itervalues():
-        if n < max(i):
-            n = max(i)
-    n = int(n)
+    nodes = set()
+    for u, v in edges.itervalues():
+        nodes.add(u)
+        nodes.add(v)
+    nodes = sorted(list(nodes), reverse=True)
+    n = len(nodes)
     print "n =", n
 
     # initialize dictionaries
@@ -105,15 +107,15 @@ def dfsLoop(edges, adjacencyList):
     # leader = dict of {node: origin node from which it was discovered}
     # f = dict of finishing times {node: rand order in which paths from node
     # fully explored
-    discovered = dict(zip(range(1, n+1), [False]*n))
-    leader = dict(zip(range(1, n+1), [False]*n))
-    f = dict(zip(range(1, n+1), [False]*n))
+    discovered = dict(zip(nodes, [False]*n))
+    leader = dict(zip(nodes, [False]*n))
+    f = dict(zip(nodes, [False]*n))
 
     # initialize finishing time, i.e. number of nodes completely processed
     t = 0
 
-    # For all nodes, counting down from node n to node 1
-    for i in range(n, 0, -1):
+    # For all nodes, counting down from node n to node 1 (nodes is pre-sorted)
+    for i in nodes:
         # If node undiscovered
         if not discovered[i]:
             # Run DFS on graph using node i as starting point; keeping track of
