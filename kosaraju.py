@@ -100,7 +100,6 @@ def dfsLoop(edges, adjacencyList):
         nodes.add(v)
     nodes = sorted(list(nodes), reverse=True)
     n = len(nodes)
-    print "n =", n
 
     # initialize dictionaries
     # discovered = boolean dict of {node: discovered flag}
@@ -126,7 +125,7 @@ def dfsLoop(edges, adjacencyList):
     return f, leader
 
 
-def kosaraju(file="scc_tests/tc0.txt"):
+def kosaraju(edges):
     '''
     Implements the Kosaraju algorithm to determine the Strongly Coupled
     Components of a graph, i.e. the components of a graph within which all
@@ -139,40 +138,56 @@ def kosaraju(file="scc_tests/tc0.txt"):
     single SCC.
     '''
 
-    edges = readEdges(file=file)
-    print "Read edges file"
-
     edges = reverseEdges(edges)
-    print "Reversed edges"
-
-    # Compute the adjacency list for reversed edges. Massive speedup through
-    # pre-computing this, rather than searching the list of edges every time to
-    # find edges starting with each node.
     adjacencyList = edgesToAdjacency(edges)
-    print "Computed adjacency list of reversed edges"
-
-    f, leader = dfsLoop(edges, adjacencyList)
-    print "Called dfsLoop to get finishing times"
+    f1, leader1 = dfsLoop(edges, adjacencyList)
 
     for i, edge in edges.iteritems():
-        edges[i] = (f[edge[0]], f[edge[1]])
-    print "Relabelled edges"
+        edges[i] = (f1[edge[0]], f1[edge[1]])
 
     edges = reverseEdges(edges)
-    print "Reversed edges"
-
     adjacencyList = edgesToAdjacency(edges)
-    print "Computed adjacency list of unreversed edges"
+    f2, leader2 = dfsLoop(edges, adjacencyList)
 
-    f, leader = dfsLoop(edges, adjacencyList)
-    print "Called dfsLoop to get SCCs"
+    # Build inverted dictionary to look up original node names
+    f1inv = {v: k for k, v in f1.items()}
+    # Build dictionary of leader2 relablled with original node names
+    leader = {}
+    for i, l in leader2.items():
+        leader[f1inv[i]] = f1inv[l]
 
+    return leader
+
+
+def count_scc_size(leader):
     cnt = Counter()
     for l in leader.itervalues():
         cnt[l] += 1
-    print "Accumulated leader counts to get SCC sizes"
-
     return cnt
+
+
+def test_kosaraju():
+    e1 = readEdges("scc_tests/tc1.txt")
+    e2 = readEdges("scc_tests/tc2.txt")
+    e3 = readEdges("scc_tests/tc3.txt")
+    e4 = readEdges("scc_tests/tc4.txt")
+    e5 = readEdges("scc_tests/tc5.txt")
+    e6 = readEdges("scc_tests/tc6.txt")
+    e7 = readEdges("scc_tests/tc7.txt")
+    assert sorted(count_scc_size(kosaraju(e1)).values(), reverse=True) == [
+        3, 3, 3]
+    assert sorted(count_scc_size(kosaraju(e2)).values(), reverse=True) == [
+        3, 3, 2]
+    assert sorted(count_scc_size(kosaraju(e3)).values(), reverse=True) == [
+        3, 3, 1, 1]
+    assert sorted(count_scc_size(kosaraju(e4)).values(), reverse=True) == [
+        7, 1]
+    assert sorted(count_scc_size(kosaraju(e5)).values(), reverse=True) == [
+        6, 3, 2, 1]
+    assert sorted(count_scc_size(kosaraju(e6)).values(), reverse=True) == [
+        35, 7, 1, 1, 1, 1, 1, 1, 1, 1]
+    assert sorted(count_scc_size(kosaraju(e7)).values(), reverse=True) == [
+        917, 313, 167, 37, 3]
 
 
 def exercise():
@@ -186,9 +201,11 @@ def exercise():
     import resource
     resource.setrlimit(resource.RLIMIT_STACK, (1.5*2**25, 1.5*2**25))
 
-    cnt = kosaraju(file="scc_tests/SCC.txt")
+    edges = readEdges("scc_tests/SCC.txt")
+    leader = kosaraju(edges)
+    cnt = count_scc_size(leader)
 
     # Print comma-separated list of top 5 SCCs by size, as requested by
     # exercise.
-    print ','.join([str(scc_size) for leader, scc_size in
-                    cnt.most_common()[0:5]])
+    print ','.join([str(scc_size) for l, scc_size in cnt.most_common()[0:5]])
+    assert cnt.most_common()[0:5] == [434821, 968, 459, 313, 211]
