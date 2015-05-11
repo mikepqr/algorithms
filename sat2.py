@@ -1,5 +1,3 @@
-import math
-import numpy as np
 import kosaraju
 
 
@@ -64,50 +62,3 @@ def solve_week6():
         s += ('1' if sol else '0')
         assert sol == ans
     return s
-
-
-def naive_check_sat(x, clauses):
-    sat = np.zeros(len(clauses), dtype=np.bool)
-    for i, (c1, c2) in enumerate(clauses):
-        if c1 > 0:
-            if x[c1-1]:
-                sat[i] = True
-        if c1 < 0:
-            if not x[-c1-1]:
-                sat[i] = True
-        if c2 > 0:
-            if x[c2-1]:
-                sat[i] = True
-        if c2 < 0:
-            if not x[-c2-1]:
-                sat[i] = True
-
-    return sat
-
-
-def naive_sat2(n, clauses):
-    nouterloop = int(math.log(n, 2))
-    ninnerloop = 2 * n ** 2
-
-    i = 0
-    while i <= nouterloop:
-        print i
-        i += 1
-        x = np.random.choice([True, False], n)
-
-        k = 0
-        while k <= ninnerloop:
-            print k
-            k += 1
-            sat = naive_check_sat(x, clauses)
-            if sat.all():
-                return True
-            else:
-                clause_fix = np.random.choice(np.where(sat == False)[0])
-                xfix = np.random.choice(clauses[clause_fix])
-                if xfix > 0:
-                    x[xfix-1] = True
-                else:
-                    x[xfix+1] = False
-
-    return False
