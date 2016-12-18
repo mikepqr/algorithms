@@ -3,6 +3,13 @@ import functools
 import itertools as it
 
 
+def iterate(f, x):
+    '''Yield the sequence [x, f(x), f(f(x)), f(f(f(x)))...].'''
+    while True:
+        yield x
+        x = f(x)
+
+
 def standingbits(n):
     '''
     Return a list containing the offsets of the non-zero bits of int n.
@@ -28,17 +35,9 @@ def expsq(x, n):
     if n == 0:
         return 1
 
-    def squarer(x):
-        '''Returns x^1, x^2, x^4 ...'''
-        yield x
-        while True:
-            x = x*x
-            yield x
-
-    # Make a list containing x^1, x^2, x^4 ... x^(2^(leading_bit-1))
+    # Make a iterator containing x^1, x^2, x^4 ... x^(2^(leading_bit-1))
     # e.g. for n=25 this gives [x^1, x^2, x^4, x^8, x^16]
-    leading_bit = n.bit_length()
-    allsquares = it.islice(squarer(x), leading_bit)
+    allsquares = it.islice(iterate(lambda a: a*a, x), n.bit_length())
 
     # Pluck out elements of list that are standing bits of n.
     # e.g. for n=25 this gives [x^1, x^8, x^16]
