@@ -16,8 +16,6 @@ def binsearch(func, x1=0, x2=1, tol=1e-3):
 
 
 def binroot(func, x1=0, x2=1, **kwargs):
-    '''
-    Returns the root of x in the interval (x1, x2)
-    '''
+    '''Returns the root of x in the interval (x1, x2).'''
     return binsearch(lambda x: True if func(x) > 0 else False,
                      x1, x2, **kwargs)
