@@ -25,14 +25,14 @@ def expsq(x, n):
     if n == 0:
         return 1
 
-    # Make a list containing x^1, x^2, x^4 .. x^leading_bit
+    # Make a list containing x^1, x^2, x^4 ... x^(2^leading_bit)
     leading_bit = n.bit_length()
     allsquares = [x]
     for i in range(leading_bit):
         allsquares.append(allsquares[-1] * allsquares[-1])
 
     # Pluck out elements of list that are standing bits of n. e.g. for n=25
-    # this gives [x^16, x^8, x^1]
+    # this gives [x^1, x^8, x^16]
     squares = [allsquares[i-1] for i in (standingbits(n))]
 
     return functools.reduce(operator.mul, squares)
