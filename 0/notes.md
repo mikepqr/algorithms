@@ -67,3 +67,9 @@ You can do this for any linear recurrence relation. For the particular choice
 of the Fibonnaci sequence, if the equality holds then c = log2((1 + 5^0.5)/2)
 and 2^c, the ratio between successive terms of the sequence is the golden
 ratio.
+
+## Length of items in sequence
+
+If a sequence grows as O(2^n) then the nth item has O(n) bits.
+
+See 0.4(c).
