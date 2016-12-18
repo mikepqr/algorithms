@@ -176,7 +176,7 @@ Taken together, g = Θ(1).
 
 ### b
 
-c = 1 so the standard formula does not apply. 
+c = 1 so the standard formula does not apply.
 
 g(n) = sum (i = 0 to n) of 1 = n + 1.
 
@@ -212,18 +212,19 @@ See ex03.py for experimental verification of answers.
 Show F(n) >= 2^(0.5n) for n >= 6
 
 For n = 6, F(n) = 8, and 2^(0.5n) = 8, so inequality satisfied
+
 For n = 7, F(n) = 13, and 2^(0.5n) = 11.3, so inequality satisfied
 
-Proof by induction, i.e. show that if 
-F(n) >= 2^(0.5n), F(n-1) >= 2^(0.5(n-1))
+Proof by induction, i.e. show that if
+F(n) >= 2^(0.5n) and F(n-1) >= 2^(0.5(n-1))
 then F(n+1) >= 2^(0.5(n+1)).
 
-F(n+1) >= 2^(0.5n) + 2(0.5(n-1)) 
-= 2(0.5(n-1)) (2^0.5 + 1)
+F(n+1) >= 2^(0.5n) + 2^(0.5(n-1))
+= 2^(0.5(n-1)) (2^0.5 + 1)
 
-(2^0.5 + 1) > 2 so F(n+1) >= 2 x 2(0.5(n-1)) 
+(2^0.5 + 1) > 2 so F(n+1) >= 2 x 2^(0.5(n-1))
 
-F(n+1) >= 2(0.5(n-1) + 1) = 2(0.5(n+1))
+F(n+1) >= 2^(0.5(n-1) + 1) = 2^(0.5(n+1))
 
 ### b
 
@@ -246,7 +247,9 @@ Hence c = log2(x) >= log2((1+5^0.5)/2) ~= 0.694
 
 Establish truth of base cases given the condition required for the induction
 relation:
+
 F(0) = 0 < 2^0
+
 F(1) = 1 < ((1 + 5^0.5)/2)
 
 See ex3.py for experimental confirmation.
@@ -262,14 +265,14 @@ Therefore F(n) = Ω(2^0.5n) for c < log2((1 + 5^0.5)/2)
 See fib3 in fib.py for an implementation of this algorithm and exponentiation
 by squaring.
 
-### a 
+### a
 
 AB = C. If A, B and C are R^(2x2) then to form an element in C requires two
 multiplications and one addition.
 
 Therefore to form C requires 8 multiplications and four additions.
 
-### b 
+### b
 
 How many multiplications does it take to calculate X^n?
 
@@ -283,8 +286,8 @@ In this case we square 4 times and do 2 multiplications = 6 multiplications.
 Generally the largest term is formed by floor(log2(n)) squarings,
 e.g. log2(25) = 4.6.
 
-All other terms are formed as by-products of this, so floor(log2(n)) squarings
-are necessary.
+All other terms are formed as by-products of this, e.g. you get X^8 for free
+when you calculate X^16, so floor(log2(n)) squarings are necessary.
 
 The squared numbers are combined with no more than floor(log2(n)) - 1
 multiplications, since that is the number of digits in the binary expansion of
@@ -296,14 +299,14 @@ is also Ɵ(log2(n))).
 
 ### c
 
-F(n) is log2(F(n) bits long.
+F(n) is log2(F(n)) bits long.
 
 F(n) = O(2^n) from 0.3(b). From the definition of O, F(n) < c 2^n for all n
 where c is a positive constant.
 
 log2(F(n)) < log2(c 2^n) = log2(c) + n
 
-Length of F(n) = log2(F(n)) = O(n) 
+Length of F(n) = log2(F(n)) = O(n)
 
 All intermediate results, i.e. F(0) ... F(n-1) are no longer than F(n),
 therefore all intermediate results are O(n) long.
@@ -320,14 +323,14 @@ Multiplication running time = Ɵ(M(b))
 The running time of fib3 is Ɵ(running time of forming X^n), where X is a 2x2
 matrix.
 
-To calcualate X^n we must do O(log(n)) multiplications. 
+To calcualate X^n we must do O(log(n)) multiplications.
 
 The numbers being multiplied are O(n) bits (from part c).
 
 The multiplications have running time M(b) = O(M(n)) for all multiplications
 since n >= b.
 
-So: we do O(log(n)) operaations which have running time O(M(n)), therefore fib3
+So: we do O(log(n)) operations which have running time O(M(n)), therefore fib3
 has running time O(log(n) M(n)).
 
 Note: The question tells us in particular that M(b) = O(b^2) (the worst-case
@@ -337,18 +340,18 @@ use to show that M(b) = O(M(n)) for b <= n.
 
 ### e
 
-Assume M(n) = Ɵ(n^a) where 1 <= a <= 2. I think this is infact true for
+Assume M(n) = Ɵ(n^a) where 1 <= a <= 2. I think this is in fact true for
 multiplication, but the constraints on a are not used in the solution.
 
 The running time of fib3 is O(log(n)) multiplications, each of which has a
-running time of Ɵ(b^a), where b is the number of bits in the number. 
+running time of Ɵ(b^a), where b is the number of bits in the number.
 
 The numbers are initially 1 bit long, but double with every squaring. They
 continue to do this until they are O(n) long.
 
 Therefore the running time of fib3 is O(1 + 2^a + 4^a ... n^a).
 
-This is a geometric series with ratio 2^a and log(n) terms. The sum is thus 
+This is a geometric series with ratio 2^a and log(n) terms. The sum is thus
 (2^a^log(n) - 1) / (2^a - 1)
 
 (this is the usual sum of geometric series formula x -1)
@@ -357,4 +360,5 @@ The running time is therefore is O(2^a^log(n)). 2^log(n) = n so this simplifies
 to O(n^a) = O(M(n)).
 
 Note this is consistent with 0.4(d) in which we found the running time is
-O(M(n) log(n)).
+O(M(n) log(n)). In that question we said all the numbers being multiplied are
+O(n), which is true, but not a very strong statement.
