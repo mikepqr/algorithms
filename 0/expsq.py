@@ -26,7 +26,7 @@ def expsq(x, n):
         return 1
 
     # Make a list containing x^1, x^2, x^4 ... x^(2^leading_bit)
-    leading_bit = n.bit_length()
+    leading_bit = n.bit_length() - 1
     allsquares = [x]
     for i in range(leading_bit):
         allsquares.append(allsquares[-1] * allsquares[-1])
