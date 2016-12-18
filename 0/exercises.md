@@ -205,6 +205,8 @@ Fibonnaci's sequence:
 
 F(0) = 0, F(1) = 1, Fn = F(n-1) + F(n-2)
 
+See ex03.py for experimental verification of answers.
+
 ### a
 
 Show F(n) >= 2^(0.5n) for n >= 6
@@ -257,6 +259,9 @@ Therefore F(n) = Ω(2^0.5n) for c < log2((1 + 5^0.5)/2)
 
 ## 0.4
 
+See fib3 in fib.py for an implementation of this algorithm and exponentiation
+by squaring.
+
 ### a 
 
 AB = C. If A, B and C are R^(2x2) then to form an element in C requires two
@@ -273,21 +278,21 @@ X^n down into a series of squarings and multiplications.
 
 e.g. X^25 = X^16 X^8 X^1 = ((((X^2)^2)^2)^2) (((X^2)^2)^2) X
 
-In this case there are 9 multiplications.
+In this case we square 4 times and do 2 multiplications = 6 multiplications.
 
-Generally there largest term is formed by floor(log2(X)) squarings, e.g.
-log2(25) = 4.6.
+Generally the largest term is formed by floor(log2(n)) squarings,
+e.g. log2(25) = 4.6.
 
-All other terms are formed as by-products of this, so floor(log2(X)) squarings
+All other terms are formed as by-products of this, so floor(log2(n)) squarings
 are necessary.
 
-The squared numbers are combined with no more than floor(log2(x)) - 1
+The squared numbers are combined with no more than floor(log2(n)) - 1
 multiplications, since that is the number of digits in the binary expansion of
-x.
+n.
 
-Squarings are multiplications so the total number of multiplications is 
-2 floor(log2(x)) - 1, which is O(log2(x)) as required by the question (and is
-also Ɵ(log2(x))).
+Squarings are multiplications so the total number of multiplications is no more
+than 2 floor(log2(n)) - 1, which is O(log2(n)) as required by the question (and
+is also Ɵ(log2(n))).
 
 ### c
 
@@ -305,10 +310,10 @@ therefore all intermediate results are O(n) long.
 
 ### d
 
-From the question: there exists an algorithm for multiplying to n-bit numbers
+From the question: there exists an algorithm for multiplying two n-bit numbers
 with running time M(n). n here is the number of bits in a general number, not
 the number denoting which Fibonnaci number we're calculating, so I will use b
-to denote number of bits. 
+to denote number of bits.
 
 Multiplication running time = Ɵ(M(b))
 
@@ -350,3 +355,6 @@ This is a geometric series with ratio 2^a and log(n) terms. The sum is thus
 
 The running time is therefore is O(2^a^log(n)). 2^log(n) = n so this simplifies
 to O(n^a) = O(M(n)).
+
+Note this is consistent with 0.4(d) in which we found the running time is
+O(M(n) log(n)).
