@@ -1,5 +1,6 @@
 import operator
 import functools
+import itertools as it
 
 
 def standingbits(n):
@@ -25,14 +26,20 @@ def expsq(x, n):
     if n == 0:
         return 1
 
-    # Make a list containing x^1, x^2, x^4 ... x^(2^leading_bit)
-    leading_bit = n.bit_length() - 1
-    allsquares = [x]
-    for i in range(leading_bit):
-        allsquares.append(allsquares[-1] * allsquares[-1])
+    def squarer(x):
+        '''Returns x^1, x^2, x^4 ...'''
+        yield x
+        while True:
+            x = x*x
+            yield x
 
-    # Pluck out elements of list that are standing bits of n. e.g. for n=25
-    # this gives [x^1, x^8, x^16]
-    squares = [allsquares[i-1] for i in (standingbits(n))]
+    # Make a list containing x^0, x^1, x^2, x^4 ... x^(2^leading_bit)
+    # e.g. for n=25 this gives [x^1, x^2, x^4, x^8, x^16]
+    leading_bit = n.bit_length()
+    allsquares = it.islice(squarer(x), leading_bit)
+
+    # Pluck out elements of list that are standing bits of n.
+    # e.g. for n=25 this gives [x^1, x^8, x^16]
+    squares = (s for i, s in enumerate(allsquares) if i+1 in standingbits(n))
 
     return functools.reduce(operator.mul, squares)
