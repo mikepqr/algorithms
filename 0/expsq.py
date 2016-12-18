@@ -33,7 +33,7 @@ def expsq(x, n):
             x = x*x
             yield x
 
-    # Make a list containing x^0, x^1, x^2, x^4 ... x^(2^leading_bit)
+    # Make a list containing x^1, x^2, x^4 ... x^(2^(leading_bit-1))
     # e.g. for n=25 this gives [x^1, x^2, x^4, x^8, x^16]
     leading_bit = n.bit_length()
     allsquares = it.islice(squarer(x), leading_bit)
