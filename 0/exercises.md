@@ -132,8 +132,7 @@ is much larger than 2^n.
 
 ### p
 
-f(n) = log(n)^log(n)
-g(n) = 2^(log2(n)^2)
+f(n) = log(n)^log(n), g(n) = 2^(log2(n)^2)
 
 f(n) = n^(log log(n)) (see question (g))
 
@@ -143,13 +142,22 @@ g(n) = (2^(log2(n))^log2(n) = n^log2(n) (because x = b^(logb(x)))
 
 ### q
 
-f(n) = sum (i = 1 to n) of i^k
-g(n) = n^(k+1)
+f(n) = sum (i = 1 to n) of i^k, g(n) = n^(k+1)
 
-[Faulhaber's formula](https://en.wikipedia.org/wiki/Faulhaber%27s_formula) says
-that this sum is a polynomial in n where the leading term is n^(k+1).
+f(n) = 1^k + 2^k + 3^k ... n^k
 
-So f = Θ(g).
+Each term is <= n^k and there are n terms so the sum is less than n n^k, so
+f(n) = O(n^(k+1))
+
+Here's the trick: throw away the first half of the sequence. Each term in the
+second half of the series is at least (n/2)^k (that's the value of the first
+term in the second half).
+
+So f(n) is >= (n/2)^k + (n/2)^k ... where there are (n/2) of these terms
+
+So f(n) >= (n/2)^(k+1) so sum = Ω(n^(k+1))
+
+So f(n) = Θ(n^(c+1)) = Θ(g).
 
 ## 0.2
 

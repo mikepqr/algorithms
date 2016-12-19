@@ -73,3 +73,25 @@ ratio.
 If a sequence grows as O(2^n) then the nth item has O(n) bits.
 
 See 0.4(c).
+
+## Proving Θ of a sequence with n terms
+
+See 0.1(q) and http://stackoverflow.com/a/2095472/409879 for examples.
+
+All the terms are smaller than the biggest term (duh) and there are n of them
+therefore sequence is O(n x biggest term).
+
+To prove lower bound, discard the first half of the sequence. f(n) is obviously
+>= what remains. What remains is >= first term in second half of sequence x
+n/2, since all later terms are larger.
+
+For example, to prove that log(n!) = Θ(n log(n)):
+
+log(n!) = log(1) + log(2) + log(3) ... log(n) = O(n log(n)) because the largest
+term is log(n) and there are n terms so clearly the sum is no larger than n
+log(n).
+
+Now discard first half. Then log(n!) >= log(n/2) + ... + log(n)
+>= log(n/2) ... log(n/2) = n/2 log(n/2) = Ω(n log(n))
+
+log(n!) = O(n log(n)) and Ω(n log(n)) therefore Θ(n log(n)).
