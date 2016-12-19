@@ -35,7 +35,7 @@ def expsq(x, n):
     if n == 0:
         return 1
 
-    # Make a iterator containing x^1, x^2, x^4 ... x^(2^(leading_bit-1))
+    # Make a iterator whose ith element is x^(2^i)
     # e.g. for n=25 this gives [x^1, x^2, x^4, x^8, x^16]
     allsquares = it.islice(iterate(lambda a: a*a, x), n.bit_length())
 
