@@ -14,8 +14,10 @@ def checkc(c, nmax=1000):
 def ex03b(c=0.8):
     if checkc(c):
         print("c={} is a solution to 0.3(b)".format(c))
+        return True
     else:
         print("c={} is not a solution to 0.3(b)".format(c))
+        return False
 
 
 def ex03c():
