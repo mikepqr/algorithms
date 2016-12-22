@@ -43,8 +43,3 @@ def fib3(n):
     x = matrix(0, 1, 1, 1)
     xn = expsq.expsq(x, n)
     return xn.values[1]
-
-
-def test_fib1_fib3_agree():
-    for i in range(1000):
-        assert fib1(i) == fib3(i)
