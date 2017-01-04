@@ -2,7 +2,7 @@
 
 ### Basic propositions
 
-A statement that is either true or false, usually denoted "P".
+A proposition is a statement that is either true or false, usually denoted "P".
 
     P   NOT P
     T   F      
@@ -39,6 +39,10 @@ hypothesis and the conclusion for the compound to be true.
 To sum up: An implication is true exactly when the if-part is false or the
 then-part is true.
 
+Note that because an implication is always true if the hypothesis is false, you
+can prove that it is is generally true by proving that it is true only if the
+hypothesis is true.
+
 ### iff
 
 P if-and-only-if Q asserts that P and Q are logically equivalent, i.e. they are
@@ -49,8 +53,6 @@ both true or both false.
     T   F   F          
     F   T   F
     F   F   T
-
-It is sometimes known as "material equivalence".
 
 ### Notation
 
