@@ -14,11 +14,10 @@ A proposition is a statement that is either true or false, usually denoted "P".
     F   T   F           T
     F   F   F           F
 
-### Implications
+### Implication
 
-"P implies Q" is weird. P is a hypothesis and Q is a conclusion. The compound
-proposition is true if P is true and Q is true, or if P is false (regardless of
-Q)! So:
+P implies Q. P is a hypothesis and Q is a conclusion. The compound proposition
+is true if Q is true or P is false.
 
     P   Q   P implies Q
     T   T   T          
@@ -26,22 +25,19 @@ Q)! So:
     F   T   T
     F   F   T
 
+e.g. If "pigs can fly" then "you will get an A on this class". Here P is false.
+So it doesn't matter what Q is: the implication is true.
+
 e.g. If "the Riemann hypothesis is true" then "x^2 >= 0". Here the truth of P
 is unknown. Q is certainly true. Therefore it doesn't matter than P is
-uncertain. According the truth table, the compound proposition is true.
+uncertain. According the truth table, the implication is true.
 
-e.g. If "pigs can fly" then "you will get an A on this class". Here P is false.
-So it doesn't matter what Q is: the compound is true.
+There need not be a causal connection between the hypothesis and the conclusion
+for the compound to be true.
 
-Note therefore that there need not be a causal connection between the
-hypothesis and the conclusion for the compound to be true.
-
-To sum up: An implication is true exactly when the if-part is false or the
-then-part is true.
-
-Note that because an implication is always true if the hypothesis is false, you
-can prove that it is is generally true by proving that it is true only if the
-hypothesis is true.
+"False implies anything" is always true. You can therefore prove an implication
+is is generally true by proving that it is true if the P is true; you can
+ignore the possibility that it is false.
 
 ### iff
 
@@ -53,6 +49,9 @@ both true or both false.
     T   F   F          
     F   T   F
     F   F   T
+
+To prove an iff/equivalence, you must prove both "P implies Q" and "Q implies
+P".
 
 ### Notation
 
@@ -129,7 +128,7 @@ for which the predicate is true).
 
     ℕ = set of natural numbers, i.e. 0, 1, 2, 3...
     ℤ = set of integers, i.e. ... -3, -2, -1, 0, 1, 2, 3...
-    ℤ+ = set of strictly positive integers, i.e. 1, 2, 3...
+    ℕ+ or ℤ+ = set of strictly positive integers, i.e. 1, 2, 3...
     ℝ = set of reals
 
 Euler's conjecture (turns out to be false!):
@@ -220,3 +219,19 @@ choice of variables.
 e.g. P ∧ ¬Q is satisfiable if P is true and Q is false.
 
 e.g. P ∧ ¬P is not satisfiable (it's false for both choices of P)
+
+## Lecture 1
+
+A mathematical proof is a verification of a proposition by a chain of logical
+deductions from a set of axioms.
+
+See above for discussion of propositions.
+
+An axiom is a propositon that is assumed to be true.
+
+Axioms should ideally be consistent and complete. A set of axioms is consistent
+is no proposition can be proved to be both true and false. A set of axioms is
+complete if it can be used to prove every proposition is either true or false.
+Completeness is desirable because it means you can prove every proposition is
+true or false. However, Gödel showed that there are no sets of axioms that are
+both consistent and complete.
