@@ -63,6 +63,23 @@ proving _both_ implications (e.g. by assumption or by contrapositive).
 Alternatively you can prove it by a chain of iffs, e.g. P ⇔ R and R ⇔ Q means
 that P ⇔ Q.
 
+Alternatively as is clear from problem set 1, question 6, you can prove by case
+analysis. 
+
+For example, to prove |x| > 2 ⇔ x^2 > 4 it is sufficent to enumerate an
+exhaustive set of cases:
+
+    1. x < -2
+    2. -2 <= x <= 2
+    3. x > 2.
+    
+Case 1 and 3 suffice to prove that |x| > 2 ⇒ x^2 > 4
+
+Case 1 and 3 are the only cases for which x^2 > 4. This proves that 
+x^2 > 4 ⇒ |x| > 2.
+
+|x| > 2 ⇒ x^2 > 4 and x^2 4 ⇒ |x| > 2. QED.
+
 ### Proof by contradiction
 
 Suppose P is false. Deduce something known to be false. This is a
