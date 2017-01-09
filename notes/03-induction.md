@@ -254,3 +254,78 @@ P(n+1) is true. By cases.
  2. If n+1 is not prime then it is the product of numbers smaller than itself.
     But all numbers smaller than itself are themselves the products of primes.
     QED.
+
+## Recursive data types
+
+(not in lecture)
+
+Recursive data types are defined in terms of base cases and constructor cases.
+E.g. strings of brackets, brkts
+
+ - _Base case_. The empty string λ
+ - _Constructor case_. If s ∈ brkts then s] and s[ are in brkts.
+
+Or matched strings of brackets, recmatch
+
+ - _Base case_. λ ∈ recmatch
+ - _Constructor case_. If s, t ∈ recmatch then [s]t ∈ recmatch.
+
+## Structural induction
+
+Prove some property P holds for all elements of a recursively defined data type
+
+ - Prove it holds for the base cases
+ - Prove it holds for the constuctor cases assuming it is true for the
+   component data items.
+
+It is possible to express ordinary induction as a special case of structural
+induction:
+
+ - base case: 0 ∈ ℕ
+ - constructor: if n ∈ ℕ then the successor n+1 of n is also in ℕ.
+
+## Functions review
+
+    f : A → B
+
+f is a function with domain A and codomain B.
+
+    f(a) = b
+
+f assigns a ∈ A to b ∈ B.
+
+A function that is not defined on some elements of A is partial (e.g. 1/x). A
+function that is defined on all elements is total.
+
+To find the set of values a function takes when applied on some subset S ⊂ A
+
+    f(S) ::= {b ∈ B | f(s) = b for some s ∈ S}
+
+Applying f to a set S is called pointwise application. f(S) is the image of S
+under f.
+
+The set of values that arises from applying f to all possible arguments is the
+range.
+
+## Arithemtic expression parsing
+
+Let Aexp be the set of arithmetic expressions in terms of x.
+
+ - _Base cases_.
+   - x ∈ Aexp
+   - The numeral k ∈ N is in Aexp
+ - _Constructor cases_. If e, f ∈ Aexp
+   - (e + f) ∈ Aexp
+   - (e * f) ∈ Aexp
+   - -e ∈ Aexp
+
+Imagine a function eval : Aexp x ℤ → ℤ which evaluates Aexps for a particular
+choice of x ∈ ℤ, say n. Defined recursively
+
+ - _Base cases_.
+   - e is x: eval(x, n) ::= n
+   - e is k: eval(k, n) ::= k
+ - _Constructor cases_.
+   - e is e1 + e2: eval(e1 + e2, n) ::= eval(e1, n) + eval(e2, n)
+   - e is e1 * e2: eval(e1 * e2, n) ::= eval(e1, n) * eval(e2, n)
+   - e is -e1: eval(-e1, n) ::= -eval(e1, n)
