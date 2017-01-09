@@ -85,6 +85,9 @@ x^2 > 4 ⇒ |x| > 2.
 Suppose P is false. Deduce something known to be false. This is a
 contradiction, therefore P must be true.
 
+This works because the only way "¬P ⇒ F is true" can be true, is if ¬P is
+false, by the definition of implication.
+
 Note this is essentially proof by contrapositive of T ⇒ P. The contrapositive
 of this proposition is ¬P ⇒ F.
 
