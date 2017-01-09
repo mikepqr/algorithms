@@ -8,4 +8,4 @@
  - [X] Finish homework 1
  - [X] Read chapter 3
  - [X] Watch lecture 3
- - [ ] Do homework 2
+ - [X] Do homework 2
