@@ -206,30 +206,35 @@ Academy](https://www.khanacademy.org/computing/computer-science/cryptography/mod
 
 _Lemma_. If x, y ∈ ℕ where x >= y then gcd(a, b) = gcd(a - b, b)
 
-_Proof_.
+_Proof_. Proof by showing gcd(a, b) no bigger than gcd(a - b, b) and also no
+smaller than gcd(a - b, b).
 
     gcd(a, b) | a-b
 
-because a = x gcd(a, b) and b = y gcd(a, b) where x, y ∈ ℕ. Similarly
+because a = x gcd(a, b) and b = y gcd(a, b) where x, y ∈ ℕ.
+
+    gcd(a, b) | b
+
+by definition. gcd(a, b) is therefore a common divisor of a-b and b. 
+
+Any common divisor of two numbers must be no bigger than the _greatest_ common
+divisor. Hence,
+
+    gcd(a, b) <= gcd(a-b, b).   [*]
+
+Similarly
 
     gcd(a-b, b) | a
 
-and by definition
+(same argument that shows gcd(a,b) | a-b) and 
 
-    gcd(a-b, b) | b.
+    gcd(a-b, b) | b
 
-gcd(b, a-b) is therefore a common divisor of a and b. But gcd(a, b) is by
-definition the _greatest_ common divisor. Therefore
+by definition. gcd(a-b, b) is therefore a common divisor of a and b, and is therefore no bigger than the _greatest_ common divisor.
 
     gcd(a, b) >= gcd(a-b, b).  [*]
 
-Similarly: gcd(a, b) | b (by definition) and gcd(a, b) | a-b (above). Thefore
-gcd(a, b) is a common divisor of b and a-b. But gcd(a-b, b) is the _greatest_
-common divisor, so
-
-    gcd(a, b) <= gcd(a-b, b)   [*]
-
-The two equalities `[*]` are true ⇒ gcd(a, b) = gcd(a - b, b). ∎
+The two equalities `[*]` ⇒ gcd(a, b) = gcd(a - b, b). ∎
 
 _Theorem_. If x, y ∈ ℕ where x >= y then gcd(x, y) = gcd(x mod y, y)
 
