@@ -140,3 +140,60 @@ recursive calls. Each recursion potentially involves addition/subtraction of an
 n-bit number (y) and O(n) bit numbers q and r.
 
 The running time is therefore O(n^2).
+
+## Modulo arithmetic
+
+The `mod` infix operator returns the remainder of x/N, e.g. 5 mod 3 = 2.
+
+Two numbers are equivalent modulo N if they have the same remainder when
+divided by N.
+
+If this is true N divides x - y exactly, i.e. N|x-y or (x-y) mod N = 0.
+
+    x ≡ y (mod N) ⇔ N|x-y
+
+If x ≡ x' (mod N) and y ≡ y' (mod N):
+
+ - x + y ≡ x' + y' (mod N)
+ - xy ≡ x'y' (mod N)
+
+i.e. it's possible to form the sum of x and y (mod N) by taking the sum of two
+other numbers that are modulo equivalent to x and y.
+
+The usual rules of associativity, commutativity and distributivity apply:
+
+ - x + (y + z) ≡ (x + y) + z (mod N)
+ - xy = yx (mod N)
+ - x(y + z) = xy + xz (mod N)
+
+## Modulo arithmetic running times
+
+ - Addition modulo N involves taking the sum of two numbers < N. This sum is
+   smaller than 2N. If it's greater than N then we must subtract N from it.
+   Addition therefore involves addition and subtraction of numbers that never
+   exceed 2N. Running time is therefore linear in the size of these numbers,
+   i.e. O(n) = O(log N).
+
+ - Multiplication modulo N of two numbers < N forms a product < N^2. We must
+   divide the product by N 0 or 1 times to ensure it is less than N.
+   Multiplication therefore involves multiplication of n-bit numbers and,
+   potentially, division of n-bit numbers. Each of these operations can be done
+   in O(n^2) using the non-modulo algorithms above. The running time is
+   therefore O(n^2).
+
+Note we don't need to divide (or equivalently do many subtractions) to do
+modulo addition because we know the sum is less than 2N, so at most 1
+subtraction of N will be required to make it less than N.
+
+## Modulo exponentiation
+
+It is obviously true that
+
+    x^y = { x^((y//2)^2)     if x is even
+          { x * x^(y//2)^2   if y is odd
+
+It's possible to implement a non-modulo multiplication algorithm (see
+[expsq.py](../0/expsq.py)) that implements this non-recursively. Recursively it
+can be written much like the French multiplication algorithm, except we square
+z instead of doubling it, and the base case y = 0 yields 1. See
+[arithmetic.py](arithmetic.py).
