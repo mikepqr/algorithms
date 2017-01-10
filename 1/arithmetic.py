@@ -64,3 +64,11 @@ def modexp(x, y, N=0):
         return mod(square(z), N)
     else:
         return mod(mult(x, square(z)), N)
+
+
+def gcd(a, b):
+    '''Return gcd(a, b) using Euclid's algorithm'''
+    if b == 0:
+        return a
+    else:
+        return gcd(b, mod(a, b))

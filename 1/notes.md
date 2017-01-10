@@ -197,3 +197,69 @@ It's possible to implement a non-modulo multiplication algorithm (see
 can be written much like the French multiplication algorithm, except we square
 z instead of doubling it, and the base case y = 0 yields 1. See
 [arithmetic.py](arithmetic.py).
+
+## Euclid's rule
+
+See [Khan
+Academy](https://www.khanacademy.org/computing/computer-science/cryptography/modarithmetic/a/the-euclidean-algorithm)
+(the proof in the book is very terse).
+
+_Lemma_. If x, y ∈ ℕ where x >= y then gcd(a, b) = gcd(a - b, b)
+
+_Proof_.
+
+    gcd(a, b) | a-b
+
+because a = x gcd(a, b) and b = y gcd(a, b) where x, y ∈ ℕ. Similarly
+
+    gcd(a-b, b) | a
+
+and by definition
+
+    gcd(a-b, b) | b.
+
+gcd(b, a-b) is therefore a common divisor of a and b. But gcd(a, b) is by
+definition the _greatest_ common divisor. Therefore
+
+    gcd(a, b) >= gcd(a-b, b).  [*]
+
+Similarly: gcd(a, b) | b (by definition) and gcd(a, b) | a-b (above). Thefore
+gcd(a, b) is a common divisor of b and a-b. But gcd(a-b, b) is the _greatest_
+common divisor, so
+
+    gcd(a, b) <= gcd(a-b, b)   [*]
+
+The two equalities `[*]` are true ⇒ gcd(a, b) = gcd(a - b, b). ∎
+
+_Theorem_. If x, y ∈ ℕ where x >= y then gcd(x, y) = gcd(x mod y, y)
+
+_Proof_. The above lemma demonstrates that 
+
+    gcd(x, y) = gcd(x - y, y).
+    
+But 
+
+    gcd(x - y, y) = gcd(x - 2y, y)
+    
+also by the lemma. Repeated application yields
+
+    gcd(x - y, y) = gcd(x - qy, y)
+
+where q is the quotient in x = qy + r, and x mod y ≡ r. ∎
+
+## Euclid's algorithm
+
+Euclid's rule allows us to solve the smaller problem gcd(a mod b, b) instead of
+gcd(a, b). And we can keep reducing the size of the problem until we reach a
+base case, gcd(a, 0) = a.
+
+This induces a recursive algorithm:
+
+```python
+def gcd(a, b):
+    '''Return gcd(a, b) using Euclid's algorithm'''
+    if b == 0:
+        return a
+    else:
+        return gcd(b, mod(a, b))
+```
