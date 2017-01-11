@@ -22,14 +22,27 @@ def halve(x):
     return x >> 1
 
 
-def mult(x, y):
+def multpos(x, y):
+    '''Multiply two positive integers using the French method.'''
     if y == 0:
         return 0
-    z = mult(x, halve(y))
+    z = multpos(x, halve(y))
     if even(y):
         return double(z)
     else:
         return x + double(z)
+
+
+def mult(x, y):
+    '''Multiply two integers.'''
+    if x < 0 and y >= 0:
+        return -multpos(-x, y)
+    elif x >= 0 and y < 0:
+        return -multpos(x, -y)
+    elif x < 0 and y < 0:
+        return multpos(-x, -y)
+    else:
+        return multpos(x, y)
 
 
 def square(x):
@@ -72,3 +85,19 @@ def gcd(a, b):
         return a
     else:
         return gcd(b, mod(a, b))
+
+
+def quotient(x, N):
+    '''Return x//N'''
+    return div(x, N)[0]
+
+
+def egcd(a, b):
+    '''Returns x, y, d such that d = gcd(a, b) and ax + by = d'''
+    if b == 0:
+        return 1, 0, a
+    xprime, yprime, dprime = egcd(b, mod(a, b))
+    x = yprime
+    y = xprime - mult(quotient(a, b), yprime)
+    d = dprime
+    return x, y, d

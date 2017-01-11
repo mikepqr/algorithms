@@ -230,7 +230,8 @@ Similarly
 
     gcd(a-b, b) | b
 
-by definition. gcd(a-b, b) is therefore a common divisor of a and b, and is therefore no bigger than the _greatest_ common divisor.
+by definition. gcd(a-b, b) is therefore a common divisor of a and b, and is
+therefore no bigger than the _greatest_ common divisor.
 
     gcd(a, b) >= gcd(a-b, b).  [*]
 
@@ -268,3 +269,90 @@ def gcd(a, b):
     else:
         return gcd(b, mod(a, b))
 ```
+
+## Euclid's algorithm running time
+
+_Lemma_. If a >= b then a mod b <= a/2.
+
+_Proof_. By exhaustive case analysis.
+
+ - b <= a/2. a mod b < b ∀ b. Therefore a mod b < a/2
+ - b > a/2. a mod b = a - b. Therefore a mod b < a/2
+
+Therefore each recursion of Euclid's algorithm one of the two numbers at least
+halves. Which number halves alternatves. So after two recursions both numbers
+have halved. And after O(2n) = O(n) recursions the base case is reached. Each
+recursion has a mod operation, which has the same big-Oh running time as
+division, i.e. O(n^2).
+
+Euclid's algorithm is therefore O(n^3).
+
+## A test for a claimed gcd
+
+_Lemma_. If d|a and d|b, and d = ax + by where x, y ∈ ℤ then d = gcd(a, b).
+
+Which is to say, if presented with a claimed gcd(a, b) and two integer
+coefficients x and y such that ax + by = d then d is indeed the gcd(a, b)
+
+Note x, y need not be positive.
+
+_Proof_. If d|a and d|b then d is a common divisor of a and b. Therefore 
+
+    d <= gcd(a, b).
+
+By definition gcd(a, b)|a and gcd(a, b)|b. gcd(a, b) divides any linear
+combination of a and b, e.g. ax + by = d. 
+
+    gcd(a, b)|d ⇒ gcd(a, b) <= d
+
+    d <= gcd(a, b) ∧ gcd(a, b) <= d ⇒ d = gcd(a, b).
+
+## Extended Euclid
+
+This algorithms returns not just gcd(a, b), but the integers x and y that such
+that ax + by = gcd(a, b).
+
+```python
+def egcd(a, b):
+    '''Returns x, y, d such that d = gcd(a, b) and ax + by = d'''
+    if b == 0:
+        return 1, 0, a
+    xprime, yprime, dprime = egcd(b, mod(a, b))
+    x = yprime
+    y = xprime - a//b * yprime
+    d = dprime
+    return x, y, d
+```
+
+_Proof_. Correctness of return value of d follows from gcd() above; if you
+ignore x and y the algorithms are identical.
+
+Correctness of x and y is proved by strong induction on b.
+
+_Base step_. b = 0. egcd(a, 0) = 1, 0, a ∀ a. gcd(a, 0) = a. a = 1a + 0b ✓
+
+_Inductive step_. Let I.H. be proposition that the algorithm is correct for all
+values of a and all b < bi some specific choice of b.
+
+The algorithm calculates egcd(a, bi) by calling egcd(b', a mod b'). 
+
+a mod bi < bi by definition of mod. 
+
+By inductive hypothesis the algorithm is correct for b < bi. 
+
+Therefore the x' and y' it returns are correct for inputs bi and a mod bi, i.e.
+
+    gcd(bi, a mod bi) = bx' + (a mod bi)y'
+
+Now must show operations performed on x' and y' yield the desired x and y.
+
+    d = gcd(a, bi) 
+      = gcd(bi, a mod bi)
+      = bi x' + (a mod bi)y'
+      = bi x' + (a - a//bi bi)y'
+      
+Because p mod q = p - p//q * q by definition. Then
+
+    d = ay' + bi (x' - a//bi y').
+
+Therfore if x = y' and y = x' - a//bi y' then d = ax + bi y. ∎
