@@ -595,3 +595,32 @@ r) and (z xor r) then you can take their xor:
 If either message contains a string of zeros then the other message will appear
 clear. If the messages have identical passages then this will show as a string
 of 0s in x xor z.
+
+## Bijection
+
+f : X → Y is _injective_ iff each y ∈ Y is reached from exactly one x ∈ X
+
+f : X → Y is _surjective_ iff each x ∈ X maps to exactly one y ∈ Y
+
+So, if X = {x1, x2}, Y = {y1, y2}
+
+    f(x) = {y1 if x1
+           {y2 if x1
+
+is injective, as each y ∈ Y is reached from one x ∈ X. But it is not surjective,
+as x1 maps to both y1 and y2.
+
+    f(x) = {y1 if x1
+           {y1 if x2
+
+is surjective as each x maps to one y, but it is not injective, as y1 can be
+reached from two items in X.
+
+A function that is both injective and surjective is _bijective_. Then each
+element in each set has exactly one opposite number in the other set. This is
+possible (but not necessary) ⇔ |X| = |Y|.
+
+    f(x) = {y1 if x1
+           {y2 if x2
+
+This function is bijective.
