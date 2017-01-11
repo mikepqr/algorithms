@@ -185,6 +185,10 @@ Note we don't need to divide (or equivalently do many subtractions) to do
 modulo addition because we know the sum is less than 2N, so at most 1
 subtraction of N will be required to make it less than N.
 
+See below: division (i.e. formation of the multiplicative inverse modulo N) is
+O(n^3) when possible. It is only possible when the greatest common divisor of
+the operands is 1.
+
 ## Modulo exponentiation
 
 It is obviously true that
@@ -300,8 +304,8 @@ _Proof_. If d|a and d|b then d is a common divisor of a and b. Therefore
 
     d <= gcd(a, b).
 
-By definition gcd(a, b)|a and gcd(a, b)|b. gcd(a, b) divides any linear
-combination of a and b, e.g. ax + by = d. 
+By definition gcd(a, b)|a and gcd(a, b)|b. gcd(a, b) divides any integer
+coefficent linear combination of a and b, e.g. ax + by = d. 
 
     gcd(a, b)|d ⇒ gcd(a, b) <= d
 
@@ -356,3 +360,162 @@ Because p mod q = p - p//q * q by definition. Then
     d = ay' + bi (x' - a//bi y').
 
 Therfore if x = y' and y = x' - a//bi y' then d = ax + bi y. ∎
+
+The additional operations (floor division, multiplication and subtraction) in
+Extended Euclid do not affect the running time. They are O(n^2) per recursion
+as was the mod reduction. So the running time remains O(n^3).
+
+## Modular inverse
+
+x is the multiplicative inverse of a mod N if ax ≡ 1 (mod N)
+
+The multiplicative inverse does not always exist. E.g. 2 mod 6 has no inverse
+because no choice of x gives 2x ≡ 1 (mod 6). That's because 2x is even and the
+possible values of 2x mod 6 are therefore 0, 2, or 6.
+
+_Theorom_. if gcd(a, N) > 1 then no no multiplicative inverse of a mod N
+exists, i.e. ax ≠ 1 (mod N) ∀ x ∈ ℕ.
+
+_Proof_. gcd(a, N)|(ax mod N) because ax mod N can be written as an integer
+coefficient linear sum of a and N. (ax mod N is simply N subtracted from ax a
+bunch of times.)
+
+If p|q and p > 1 then q > 1. Thus if gcd(a, N) > 1 then ax mod N > 1. 
+
+ax mod N > 1 ⇒ ax ≠ 1 (mod N) ∀ x. ∎
+
+## Relative primes
+
+If gcd(a, N) = 1 then a and N are "relatively prime" and an inverse of a mod N
+exists.
+
+A prime number N is relatively prime to all non-zero integers.
+
+## Finding multiplicative inverse
+
+The extended Euclid algorithm gives a way of finding this inverse. It returns
+integers x and y such that ax + Ny = 1.
+
+Then ax ≡ 1 (mod N) because ax differs from 1 by an integer multiple of N.
+
+And thus x is the multiplicative inverse of a mod N.
+
+E.g. suppose we wish to compute the inverse of 11 mod 25. gcd(11, 25) = 1 so an
+inverse exists. egcd(11, 25) tells us that
+
+    -9*11 + 4*25 = 1
+
+Reducing both sides modulo 25
+
+    -9*11 ≡ 1 mod 25
+
+So -9 ≡ 16 mod 25 is the inverse of 11 mod 25.
+
+```python
+def multinv(a, N):
+    x, y, d = egcd(a, N)
+    return mod(x, N)
+```
+
+## Modular division
+
+      a has a multiplicative inverse modulo N 
+    ⇔ a is relatively prime to N 
+    ⇔ ax ≡ 1 mod N
+
+where x is the multiplicative inverse, which can be found using Extended Euclid
+in O(n^3).
+
+## Fermat's little theorem
+
+_Lemma_. If S the set of non-zero integers less than some prime number p i.e.
+S = {1, 2, ... p-1} then pointwise multiplication by a mod p results in the same
+set.
+
+_Proof_. It suffices to prove that the result of the pointwise multiplication
+is a set of distinct, non-zero elements all less than p, since there is only
+one set with those properties.
+
+ - The elements of the new set are non-zero because they were not, i.e. if 
+   a.i ≡ 0 mod p then i must be 0, but no all elements of the original set were
+   nonzero.
+
+   (Note to show a.i ≡ 0 mod p we divide by a. This is possible because a and p
+   are relatively prime. This is true because a is non-zero and p is prime by
+   assumption.)
+
+ - The elements are distinct because if they were not a.i ≡ a.j mod p and hence
+   (dividing by a), i ≡ j (mod p). But the original elements of the set were
+   all smaller than p, hence if i ≡ j (mod p) then i = j. But the original set
+   was distinct.
+
+ - The elements of the new set are < p because the new set is modulo p.
+
+_Theorem_. If p is prime then ∀ 1 <= a < p
+
+    a^(p-1) ≡ 1 (mod p)
+
+_Proof_. Let S be the set of non-zero integers less than some prime number p,
+i.e. S = {1, 2, ... p-1}.
+
+The product of each element in this set is (p - 1)!
+
+By lemma above, multipling every element in S by 1 <= a < p (modulo p) results
+in the same set. 
+
+i.e. if p is prime and 1 <= a < p then 
+
+    {a.1 mod p, a.2 mod p, ... a.(p-1) mod p} = S
+
+The product of each element in this set is a^(p-1) (p-1)! (mod p). Hence
+
+    (p-1)! ≡ a^(p-1) (p-1)!   (mod p)
+
+We can divide by (p-1)! because p is prime by assumption, so all other numbers
+are relatively prime to it. Then
+
+    a^(p-1) ≡ 1     (mod p)    
+
+## Primality testing
+
+Fermat's little theorem says that
+
+    ∀ a ∈ ℕ, 1 <= a < N. N ∈ Primes ⇒ a^(N-1) ≡ 1    (mod N)
+
+It therefore implies this testing strategy.
+
+ - Choose 1 <= a < N at random. 
+ - Is a^(N-1) ≡ 1 (mod N)
+   - Yes ⇒ N might be prime
+   - No ⇒ N is definitely not prime
+
+How many a's do we need to test?
+
+_Lemma_. Consider the claim a^(N-1) ≠ 1 mod N for some a relatively prime to N.
+If this is true for >= 1 choice of 1 <= a < N then it must be true for at least
+half of them.
+
+_Proof_. Fix some value a for which a^(N-1) ≠ 1 (mod N).
+
+For every element 1 <= b < N for which b^(N-1) ≡ 1 (mod N), there is an element
+that fails the test a.b (mod N), because
+
+    (a.b)^(N-1) = a^(N-1) b^(N-1)
+                = a^(N-1)
+                ≠ 1 (mod N)
+
+All these a.b (mod N) are distinct for fixed a but different b. This is because
+if a.i ≡ a.j mod N then, dividing by a (which is fine because a is relatively
+prime to N by assumption), i ≡ j (mod N), but i, j < N and i ≠ j. 
+
+So, if any item in the range 1 <= a < N fails the test then, for every number
+that passes the test there is at least one number that fails it. ∎
+
+Given this lemma, for a random choice of a:
+
+ - Pr(N is prime and a^(N-1) ≡ 1 (mod N)) = 1
+ - Pr(N is not prime and a^(N-1) ≡ 1 (mod N)) <= 1/2
+
+For k random choices of a:
+
+ - Pr(N is not prime and a^(N-1) ≡ 1 (mod N)) <= (1/2)^k

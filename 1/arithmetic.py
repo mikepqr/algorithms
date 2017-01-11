@@ -49,10 +49,11 @@ def square(x):
     return mult(x, x)
 
 
-def div(x, y):
+def divpos(x, y):
+    '''Divide two positive integers.'''
     if x == 0:
         return 0, 0
-    q, r = div(halve(x), y)
+    q, r = divpos(halve(x), y)
     q = double(q)
     r = double(r)
     if not even(x):
@@ -64,12 +65,15 @@ def div(x, y):
 
 
 def mod(x, N):
-    '''Return x mod N'''
-    return div(x, N)[1]
+    '''Return x mod N.'''
+    if x < 0:
+        return N - divpos(-x, N)[1]
+    else:
+        return divpos(x, N)[1]
 
 
 def modexp(x, y, N=0):
-    '''Return x^y mod N'''
+    '''Return x^y mod N.'''
     if y == 0:
         return 1
     z = modexp(x, halve(y), N)
@@ -80,7 +84,7 @@ def modexp(x, y, N=0):
 
 
 def gcd(a, b):
-    '''Return gcd(a, b) using Euclid's algorithm'''
+    '''Return gcd(a, b) using Euclid's algorithm.'''
     if b == 0:
         return a
     else:
@@ -89,11 +93,11 @@ def gcd(a, b):
 
 def quotient(x, N):
     '''Return x//N'''
-    return div(x, N)[0]
+    return divpos(x, N)[0]
 
 
 def egcd(a, b):
-    '''Returns x, y, d such that d = gcd(a, b) and ax + by = d'''
+    '''Returns x, y, d such that d = gcd(a, b) and ax + by = d.'''
     if b == 0:
         return 1, 0, a
     xprime, yprime, dprime = egcd(b, mod(a, b))
@@ -101,3 +105,12 @@ def egcd(a, b):
     y = xprime - mult(quotient(a, b), yprime)
     d = dprime
     return x, y, d
+
+
+def multinv(a, N):
+    '''
+    Returns the multiplicative inverse of a modulo N, i.e. x such that
+    ax ≡ 1 (mod N).
+    '''
+    x, y, d = egcd(a, N)
+    return mod(x, N)
