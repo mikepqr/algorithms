@@ -624,3 +624,65 @@ possible (but not necessary) ⇔ |X| = |Y|.
            {y2 if x2
 
 This function is bijective.
+
+A function is a bijection ⇔ The function is invertible.
+
+## RSA encryption
+
+A public key scheme to send a message x where x is a number modulo N (larger
+numbers can be chunked).
+
+The scheme is to exponentiate x to some number (the public key) modulo N. x can
+then be recovered by exponentiating to some other number (the private key).
+How are these numbers chosen?
+
+_Theorem_. For any two primes p, q, let N = pq. For any e relatively prime to
+(p - 1)(q - 1) the following properties hold:
+
+  1. The mapping x → x^e (mod N) is a bijection on {0, 1 ... N-1}.
+  2. If d is the multiplicative inverse of e modulo (p - 1)(q - 1). Then
+
+     ```
+     (x^e)^d ≡ x mod N
+     ```
+
+     i.e. exponentiation to d modulo N is the inverse of exponentiation to e
+     modulo N.
+
+_Proof_. Property 2 ⇔ Property 1 because a function that has an inverse iff it
+is a bijection. 
+
+Prove property 2, i.e. that exponentiation to d is the inverse of
+expeonentiation to e (modulo N).
+
+e is invertible modulo (p-1)(q-1) because it is chosen to be relatively prime
+to this number.
+
+The exponent ed in the putative inverse ≡ 1 mod (p-1)(q-1) by defintion of d.
+Hence
+
+    ed = 1 + k(p - 1)(q - 1)
+
+for some integer k.
+
+To show x^(ed) ≡ x mod N (as required is the inverse), we can show x^(ed) - x = 0
+(mod N), i.e.
+
+    x^(ed) - x = x^(1 + k(p - 1)(q - 1)) - x
+               = x(x^(p-1)^k(q-1) - 1)
+
+Fermat's Little Theorem tells us that if p is prime (which it is by assumption)
+then x^(p - 1) ≡ 1 mod p. Hence
+
+    x^(ed) - x ≡ 0 mod p
+
+Similarly for q (which is also prime)
+
+    x^(ed) - x ≡ 0 mod q
+
+i.e. x^(ed) - x is divisible by both p and q.
+
+Every natural number can be expressed as a product of primes. If p and q are
+among these primes for x^(ed) - x then N = pq also divides x^(ed) - x. Hence
+
+    x^(ed) - x ≡ 0 mod N    ∎
