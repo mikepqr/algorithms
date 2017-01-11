@@ -133,6 +133,8 @@ def prime(N, k=100, a=None):
     '''
     def fermat_test(a):
         return modexp(a, N-1, N) == 1
+    if a:
+        a = [ai for ai in a if ai < N]
     if a is None:
         if k >= N:
             k = N - 1
