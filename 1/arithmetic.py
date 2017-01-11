@@ -8,6 +8,7 @@ Implement basic arithmetic operations using the following bit-based primitives:
 and integer addition/subtraction, comparison of two integers, and test for
 equality to zero.
 '''
+import random
 
 
 def even(x):
@@ -114,3 +115,33 @@ def multinv(a, N):
     '''
     x, y, d = egcd(a, N)
     return mod(x, N)
+
+
+def prime(N, k=100, a=None):
+    '''
+    Returns True if a number is probably prime, False if it is definitely not.
+
+    If a is none this uses k applications of Fermat's Little Theorem.
+    Probability of failure (i.e. probability returns True if not a prime) is
+    < 1/2^k.
+
+    If a is an iterable, it performs the test for those values of a.
+    '''
+    def fermat_test(a):
+        return modexp(a, N-1, N) == 1
+    if a is None:
+        if k >= N:
+            k = N - 1
+        a = random.sample(range(1, N), k)
+    return all(fermat_test(ai) for ai in a)
+
+
+def randomprime(n):
+    '''
+    Returns a random prime that is no more than n bits long.
+    '''
+    Nmax = modexp(2, n) - 1
+    while True:
+        N = random.randint(2, Nmax)
+        if prime(N, a=(2, 3, 5)):
+            return N

@@ -197,10 +197,16 @@ It is obviously true that
           { x * x^(y//2)^2   if y is odd
 
 It's possible to implement a non-modulo multiplication algorithm (see
-[expsq.py](../0/expsq.py)) that implements this non-recursively. Recursively it
-can be written much like the French multiplication algorithm, except we square
-z instead of doubling it, and the base case y = 0 yields 1. See
-[arithmetic.py](arithmetic.py).
+[expsq.py](../0/expsq.py)) that implements this non-recursively.
+
+Recursively it can be written much like the French multiplication algorithm,
+except we square z instead of doubling it, and the base case y = 0 yields 1.
+See [arithmetic.py](arithmetic.py).
+
+If x, y, and N are n bits, this recursive algorithm halts after n recursive
+calls. Each call is a multiplication of n bit numbers (the numbers don't get
+longer than this because we're working modulo N). Therfore total running time
+is O(n^3).
 
 ## Euclid's rule
 
@@ -519,3 +525,36 @@ Given this lemma, for a random choice of a:
 For k random choices of a:
 
  - Pr(N is not prime and a^(N-1) ≡ 1 (mod N)) <= (1/2)^k
+
+## Abundance of primes
+
+_Lagrange's prime number theorem_. Let π(x) be the number of primes <= x. Then
+
+    π(x) → (x/ln(x)) as x → infinity
+
+So a random number < x has a change π(x)/x ~= 1 / ln(x) of being prime.
+
+If x is n bits long, n = log2 x and
+
+    ln(x) = log2(x)/log2(e) 
+          = 1.44
+
+So a ~1.44/n chance (or if x is n digits long in decimal, a ~0.43/n chance,
+which is to say about 5% of 9-digit SSNs are prime).
+
+## Generating random primes
+
+ - Pick a random n-bit number N
+ - Test it for primality
+ - Repeat if not prime
+
+If the primality test used is based on Fermat's little theorem, it is
+sufficient to use it with relatively few bases (e.g. a = 2, 3, 5) since the
+probability of a _random_ number being composite (i.e. passing Fermat's test
+for any a ≠ 1) is extremely low.
+
+See `randomprime()` in [arithmetic.py](arithmetic.py) for an implementation.
+
+An event with chance 1/n of occuring halts on average within O(n) trials (see
+exercises). Each trial is a constant number of modular exponentiations which
+are O(n^3). The average running time is therefore O(n^4).
