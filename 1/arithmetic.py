@@ -110,11 +110,15 @@ def egcd(a, b):
 
 def multinv(a, N):
     '''
-    Returns the multiplicative inverse of a modulo N, i.e. x such that
-    ax ≡ 1 (mod N).
+    Returns the multiplicative inverse of a modulo N, i.e. x such that ax ≡ 1
+    (mod N). This does not exist if the greatest common divisor of a and N ≠ 1,
+    i.e. if a and N are not relatively prime.
     '''
     x, y, d = egcd(a, N)
-    return mod(x, N)
+    if d == 1:
+        return mod(x, N)
+    else:
+        raise ValueError('a and N are not relatively prime.')
 
 
 def prime(N, k=100, a=None):
