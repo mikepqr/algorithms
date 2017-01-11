@@ -558,3 +558,40 @@ See `randomprime()` in [arithmetic.py](arithmetic.py) for an implementation.
 An event with chance 1/n of occuring halts on average within O(n) trials (see
 exercises). Each trial is a constant number of modular exponentiations which
 are O(n^3). The average running time is therefore O(n^4).
+
+## One-time pad cryptography
+
+x is a binary message. r is a binary string of the same length, previously
+agreed upon by the participants. Let e(x, r) be a function that encodes the
+message.
+
+    e(x, r) ≡ x xor r
+
+e is its own inverse and thus repeated application decodes the message
+
+    e(e(x, r), r) = (x xor r) xor r
+                  = x xor (r xor r)
+                  = x xor 0
+                  = x
+
+But absent r, it is not easy to infer x from e(x, r).
+
+    x   r   e(x, r)
+    00  10  10
+    01  11  10
+    10  00  10
+    11  01  10
+
+Note that four different clear messages encode to the same encrypted message
+for a different choice of r.
+
+This scheme is single use, however. If you have two encrypted messages, (x xor
+r) and (z xor r) then you can take their xor:
+
+    (x xor r) xor (z xor r) = (x xor z) xor (r xor r)
+                            = (x xor z) xor 0
+                            = x xor z
+
+If either message contains a string of zeros then the other message will appear
+clear. If the messages have identical passages then this will show as a string
+of 0s in x xor z.
