@@ -151,3 +151,8 @@ def randomprime(n):
         N = random.randint(2, Nmax)
         if prime(N, a=(2, 3, 5)):
             return N
+
+
+def lcm(a, b):
+    '''Return the lowest common multiple of integers a and b.'''
+    return quotient(mult(a, b), gcd(a, b))
