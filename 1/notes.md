@@ -686,3 +686,67 @@ Every natural number can be expressed as a product of primes. If p and q are
 among these primes for x^(ed) - x then N = pq also divides x^(ed) - x. Hence
 
     x^(ed) - x ≡ 0 mod N    ∎
+
+## Fundamental theorem of arithmetic
+
+(Not in the book)
+
+    Every integer n >= 2 can be expressed as a product of primes and this
+    factorization is unique up to rearrangement of the factors.
+
+## Greatest common divisor by shared primes
+
+Let
+
+    A = p1^k1 p2^k2 ... pn^kn
+    B = p1^j1 p2^j2 ... pn^jn
+
+where p1..pn are primes and ki >= 0. (This is true ∀ A, B by fundamental
+theorem.) Then
+
+    gcd(A, B) = product(i=1, n) pi^min(ki,ji)
+
+Or informally:
+
+    gcd(A, B) is the product of their shared prime factors
+
+For example:
+
+    360 = 2^3 . 3^2 . 5
+    756 = 2^2 . 3^3 . 7
+
+2^2 3^2 = 36 is in both these lists. It's therefore a common divisor and by the
+definition of gcd.
+
+    gcd(360, 756) >= 36
+
+But the bigger factors of 360 (any product of its primes) must be composed of
+primes that are not factors of 756. 36 is therefore the _greatest_ common
+divisor.
+
+This is not a fast method to find gcd(A, B) since factorization is expensive.
+
+## Lowest common multiple
+
+Defined as the smallest positive m such that a|m and b|m.
+
+Found by taking the product of the union of prime factors, e.g.
+
+    360 = 2^3 . 3^2 . 5
+    756 = 2^2 . 3^3 . 7
+
+    lcm = 2^3 . 3^3 . 5. 7
+
+Given a fast algorithm for gcd, however, there is a quicker way.
+
+    gcd(a, b) . lcm(a, b) = ab
+
+Hence
+
+    lcm(a, b) = ab/gcd(a, b)
+
+## Todo
+
+ - [ ] proof that product of shared prime factors is gcd
+ - [ ] proof that product of union of prime factors is lcm
+ - [ ] proof that gcd . lcm = ab.
