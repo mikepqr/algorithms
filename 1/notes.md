@@ -682,8 +682,10 @@ Similarly for q (which is also prime)
 
 i.e. x^(ed) - x is divisible by both p and q.
 
-Every natural number can be expressed as a product of primes. If p and q are
-among these primes for x^(ed) - x then N = pq also divides x^(ed) - x. Hence
+Fundamental theorem of arithmetic says that every natural number can be
+expressed as a product of a unique factorization of primes. If p and q are
+among these primes for a given number than pq is also a factor of that number.
+Hence if p and q divide (x^(ed) - x) then N = pq also divides it. Hence
 
     x^(ed) - x ≡ 0 mod N    ∎
 
@@ -747,7 +749,7 @@ Hence
 
 ## Todo
 
- - [ ] proof that product of shared prime factors is gcd
+ - [ ] proof that product of intersection of prime factors is gcd
  - [ ] proof that product of union of prime factors is lcm
  - [ ] proof that gcd . lcm = ab.
  - [ ] hash functions
