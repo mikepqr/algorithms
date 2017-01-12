@@ -750,3 +750,4 @@ Hence
  - [ ] proof that product of shared prime factors is gcd
  - [ ] proof that product of union of prime factors is lcm
  - [ ] proof that gcd . lcm = ab.
+ - [ ] hash functions

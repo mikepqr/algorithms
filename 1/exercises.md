@@ -76,3 +76,31 @@ Factorization
     588 = 2.2.3.7.7
 
 gcd(A, B) = product of shared prime factors = 2.3.7 = 42
+
+## 1.27
+
+Given
+
+    p = 17, q = 23, N = 391, e = 3, message = 41
+
+ed ≡ 1 mod (p-1, q-1)
+
+```python
+>>> d = arithmetic.multinv(3, (17-1) * (23-1))
+>>> print(d)
+235
+>>> public = (17 * 23, 3)
+>>> private = (17 * 23, 235)
+>>> print(rsa.encode(41, public))  # message = 41
+105
+>>> print(rsa.decode(105, private))  # check decryption
+41
+```
+
+## 1.28
+
+Given
+
+    p = 7, q = 11
+
+Using [rsa.py](rsa.py) e = 7 and d = 43 will work.
