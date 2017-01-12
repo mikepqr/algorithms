@@ -13,7 +13,6 @@ def keypair(n=100):
     p, q = tworandomprimes(n=n)
     pq = arithmetic.mult(p, q)
     p1q1 = arithmetic.mult(p - 1, q - 1)
-    print(p, q, pq, p1q1)
 
     while True:
         e = arithmetic.randomprime(4)
