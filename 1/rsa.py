@@ -34,12 +34,12 @@ def keypair(n=100, p=None, q=None):
     pq = arithmetic.mult(p, q)
     p1q1 = arithmetic.mult(p - 1, q - 1)
 
+    e = 2
     while True:
-        e = arithmetic.randomprime(4)
         try:
             d = arithmetic.multinv(e, p1q1)
         except ValueError:
-            pass
+            e += 1
         else:
             break
 
