@@ -747,10 +747,65 @@ Hence
 
     lcm(a, b) = ab/gcd(a, b)
 
-## Todo
+## Hash functions
 
- - [ ] proof that product of intersection of prime factors is gcd
- - [ ] proof that product of union of prime factors is lcm
- - [ ] proof that gcd . lcm = ab.
- - [ ] hash functions
- - [ ] write tests
+Simple hash function (first digit, last digit, etc.) may suffer from
+non-randomness in input.
+
+Want to minimize collisions. If they hash to the same bucket then we must put a
+list of numbers in the bucket, which increases lookup time. On the other hand,
+we don't want as many buckets as there are possible inputs, since that number
+is usually very large.
+
+Example: IP addresses. There are 256^4 possible IP addresses. Perhaps we want
+to story only 250.
+
+Consider each IP quadruple of integers modulo n between 0 and 255, x = {x1,
+..., x4}. We choose n > 255 so no harm in the modulo. As we'll see in a second,
+we actually chose n = 257, because that's both greater than 255 and prime.
+
+## Strategy to generate hash functions
+
+Define a set of hash functions, and pick one randomly from this set. Each item
+in the set is determined by k random numbers mod n, so there are n^k possible hash functions.
+
+    ha(x1, ..., xk) = Σ(i=1 to k) ai.xi mod n
+
+e.g. For IP addresses with k=4 and n=257 we might have 
+
+        a = {87, 23, 125, 4)
+    ha(x) = (87x1 + 23x2 + 125x3 + 4x4) mod 257.
+
+If the coefficients are selected at random then the following theorem is true.
+
+_Theorem_. For any two distinct inputs x={x1, ... xk} and y={y1, ... yk}, and
+for coefficients a={a1, ..., ak} chosen at random from {0, 1, ... n-1} where n
+is some prime number
+
+    Pr(ha(x) = ha(y)) = 1/n
+
+_Proof_. A collision occurs when
+
+    Σ(i=1 to k) ai.xi ≡ Σ(i=1 to k) ai.yi mod n
+
+rearrange this equation to give
+
+    Σ(i=1 to k-1) ai.(xi - yi) ≡ ak.(yk - xk) mod n
+    
+The lhs of this equation evaluates to some number, call it c. Thus the eqation
+holds 
+
+    ⇔ c = ak.(yk - xk) mod n.
+
+n is chosen to be prime. Assume without loss of generality that x and y differ
+in (at least) the kth part xk ≠ yk. 
+
+Then we can take the inverse of yk - xk mod n:
+
+    a4 = c.(yk - xk)^(-1) mod n
+
+Which is to say, the equation holds ⇔ ak takes a unique number mod n (which
+happens to be c). The probability of that if ak is randomly chosen is 1/n.
+
+If the family of hash functions is of cardinality |H| then |H|/n of them result
+in collisions for a particular distinct x and y.
