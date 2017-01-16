@@ -214,7 +214,7 @@ See [Khan
 Academy](https://www.khanacademy.org/computing/computer-science/cryptography/modarithmetic/a/the-euclidean-algorithm)
 (the proof in the book is very terse).
 
-_Lemma_. If x, y ∈ ℕ where x >= y then gcd(a, b) = gcd(a - b, b)
+_Lemma_. If a, b ∈ ℕ where a >= b then gcd(a, b) = gcd(a - b, b)
 
 _Proof_. Proof by showing gcd(a, b) no bigger than gcd(a - b, b) and also no
 smaller than gcd(a - b, b).
