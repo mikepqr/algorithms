@@ -13,6 +13,66 @@ b^2 - 1.
 
 ∀ b >= 2, b^2 - 1 >= 3b - 3. QED.
 
+## 1.2
+
+### a
+
+_Theorem_. Any binary integer is at most four times longer than the
+corresponding decimal.
+
+_Proof_. Let length of number N in binary be n2, decimal be n10. Then we want
+to show n2/n10 <= 4 ∀ n ∈ ℕ
+
+    n2 = floor(log2(N)) + 1
+    n10 = floor(log10(N)) + 1
+
+To show that the ratio of these quantities is always less than 4, it is
+sufficient to show that n2/n10 is less than some other quantity that is less
+than 4.
+
+That quantity will be the largest possible value of n2/n10, given the most
+extreme behaviour of the floor function possible, i.e. 
+
+    floor(log2(N)) ~= log2(N) and
+    floor(log10(N)) ~= log10(N) - 1
+
+Then
+
+    n2/n10 = [floor(log2(N)) + 1] / [floor(log10(N)) + 1]
+           <= (log2(N) + 1)) / log10(N)
+
+It is not simply to show this is generally true, but we can show it is true for
+N > some number, and check smaller values by hand. Continuing...
+
+If this quantity is <= 4 then n2/n10 is <= 4, i.e.
+
+              log2(N) + 1 <= 4 log10(N)
+    log10(N)/log10(2) + 1 <= 4 log10(N)
+      log10(N) + log10(2) <= 4 log10(N).log10(2)
+                 log10(2) <= [4 log10(2) - 1] log10(N)
+
+Hence
+
+    log10(N) >= log10(2)/[4 log10(2) - 1]
+           N >= 29.8
+
+The theorem thus holds for N >= 30. It is thus sufficient to check it manually
+for smaller values:
+
+```python
+>>> all((len(bin(N)[2:])/len(str(N))) <= 4 for N in range(1, 30))
+True
+```
+
+### b
+
+For very large N
+
+    n2/n10 = [floor(log2(N)) + 1] / [floor(log10(N)) + 1]
+           ~= log2(N)/log10(N)
+           = 1/log10(2)
+           = 3.32
+
 ## 1.4
 
 See [0/notes](../0/notes.md).
