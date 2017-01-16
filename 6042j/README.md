@@ -9,3 +9,7 @@
  - [X] Read chapter 3
  - [X] Watch lecture 3
  - [X] Do homework 2
+ - [X] Watch lecture 4
+ - [X] Watch lecture 5
+ - [ ] Finish chapter 4
+ - [ ] Do homework 2
