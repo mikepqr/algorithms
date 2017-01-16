@@ -1,1 +1,1 @@
-# Solutions and notes on Algorithms by Dasgupta, Papadimitriou and Vazirani
+Algorithms by Dasgupta, Papadimitriou and Vazirani
