@@ -54,7 +54,7 @@ _Proof_ by exhaustive case analysis
    length <= log(2b^n), which is <= n + 1 for all b.
 
  - The product of two n-bit numbers is at most 2n bits long because the product
-   of a number of length na and a nubmer of length nb is most
+   of a number of length na and a number of length nb is most
 
        ```
        Na Nb = (b^na - 1)(b^nb - 1) 
@@ -712,7 +712,7 @@ i.e. x^(ed) - x is divisible by both p and q.
 
 Fundamental theorem of arithmetic says that every natural number can be
 expressed as a product of a unique factorization of primes. If p and q are
-among these primes for a given number than pq is also a factor of that number.
+among these primes for a given number then pq is also a factor of that number.
 Hence if p and q divide (x^(ed) - x) then N = pq also divides it. Hence
 
     x^(ed) - x ≡ 0 mod N    ∎
@@ -755,6 +755,7 @@ primes that are not factors of 756. 36 is therefore the _greatest_ common
 divisor.
 
 This is not a fast method to find gcd(A, B) since factorization is expensive.
+But it allows you to derive an algorithm to compute the lcm.
 
 ## Lowest common multiple
 
@@ -795,7 +796,8 @@ we actually chose n = 257, because that's both greater than 255 and prime.
 ## Strategy to generate hash functions
 
 Define a set of hash functions, and pick one randomly from this set. Each item
-in the set is determined by k random numbers mod n, so there are n^k possible hash functions.
+in the set is determined by k random numbers mod n, so there are n^k possible
+hash functions.
 
     ha(x1, ..., xk) = Σ(i=1 to k) ai.xi mod n
 
