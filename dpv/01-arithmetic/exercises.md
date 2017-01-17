@@ -124,6 +124,38 @@ Multiplication of b bit numbers is O(b^2).
 
 Hence the total running time is O((log p)^2 log n).
 
+## 1.15
+
+This is the "modulus cancellation law". See
+http://math.stackexchange.com/q/392404/399542 and
+http://home.scarlet.be/~ping1339/congr.htm.
+
+_Theorem_. If gcd(c, x) = 1 then
+
+    ax ≡ bx mod c ⇔ a ≡ b mod c
+
+_Proof_.
+
+    c|ax-bx or c|(a-b)x. 
+
+If one number divides another then they differ only by a multiplicative
+constant, s:
+
+    sc = (a-b)x.
+
+Recall  that if two numbers are equal then their prime factorizations are equal
+(fundamental theorem).
+
+Hence the prime factorization of sc contains exactly the primes in the prime
+factorization of (a-b)x
+
+For example, if p is a prime dividing m then p must be a prime dividing either
+a-b or x. 
+
+But we know gcd(c, x) = 1 so there are no primes that divide both c and x.
+Hence the prime p divides a-b. Apply this to all the primes in m, and you
+deduce they are all factors of a-b, hence m itself divides a-b ∎
+
 ## 1.18
 
 Euclid's algorithm
