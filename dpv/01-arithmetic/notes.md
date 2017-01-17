@@ -24,20 +24,26 @@ _Theorom_ for all b and N, ceil(logb(N+1)) = floor(logb(N)) + 1
 _Proof_ by exhaustive case analysis
 
  - N is a power of b, N+1 is not
+
    ```
    floor(logb(N)) = logb(N)
    ceil(logb(N+1)) = logb(N) + 1
    ```
+
  - N+1 is a power of b, N is not
+
    ```
    ceil(logb(N+1)) = logb(N+1)
    floor(logb(N)) = logb(N+1) - 1
    ```
+
  - Neither is a power of b
+
    ```
    ceil(logb(N+1)) = ceil(logb(N) = floor(logb(N)) + 1
    ```
  - Both are powers of b. This is only possible if N=1, b=2. In this case
+
    ```
    ceil(log2(2)) = 1
    floor(logb(1)) + 1 = 1
