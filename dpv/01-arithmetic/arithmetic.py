@@ -50,7 +50,7 @@ def square(x):
     return mult(x, x)
 
 
-def divpos(x, y):
+def divnonneg(x, y):
     '''
     Divide two non-negative integers, returning quotient and remainder.
 
@@ -63,7 +63,7 @@ def divpos(x, y):
         return 0, 0
     if y == 0:
         return 0, x
-    q, r = divpos(halve(x), y)
+    q, r = divnonneg(halve(x), y)
     q = double(q)
     r = double(r)
     if not even(x):
