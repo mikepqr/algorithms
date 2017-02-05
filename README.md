@@ -43,5 +43,5 @@ algorithms courses and books:
      - [ ] Proof that gcd . lcm = ab.
      - [ ] Finish flashcards
  - [X] Do implementations from chapter 1
- - [ ] Write tests for implementations from chapter 1
+ - [X] Write tests for implementations from chapter 1
  - [ ] Do homework 1
