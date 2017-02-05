@@ -98,8 +98,10 @@ def mod(x, N):
 
 def modexp(x, y, N=0):
     '''Return x^y mod N.'''
+    if max(N, -N) == 1:  # any number mod 1 or mod -1 is 1
+        return 0
     if y == 0:
-        return 1
+        return mod(1, N)
     z = modexp(x, halve(y), N)
     if even(y):
         return mod(square(z), N)
