@@ -324,7 +324,7 @@ _Proof_. By exhaustive case analysis.
  - b > a/2. a mod b = a - b. Therefore a mod b < a/2
 
 Therefore each recursion of Euclid's algorithm one of the two numbers at least
-halves. Which number halves alternatves. So after two recursions both numbers
+halves. Which number halves alternates. So after two recursions both numbers
 have halved. And after O(2n) = O(n) recursions the base case is reached. Each
 recursion has a mod operation, which has the same big-Oh running time as
 division, i.e. O(n^2).
