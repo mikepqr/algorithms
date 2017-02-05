@@ -707,7 +707,7 @@ Hence k^(φ(n)-1) mod n is the multiplicative inverse of k. φ is not in general
 known, so this is of little practical use.
 
 One shortcut to computing φ(n) is if you know the _distinct_ prime factors of
-n, p1, p2 ... pj. Without proof, it so happens that
+n, p1, p2 ... pj. Then it is possible to show:
 
     φ(n) = n(1-1/p1)(1-1/p2)...(1-1/pj)
 
@@ -717,6 +717,17 @@ e.g. 300 = 2^2 3 5^2, hence the distinct factors are 2, 3 and 5
            = 80
 
 And the inverse of k mod 300, if it exists, is k^79 mod 300.
+
+## Formula for φ(n)
+
+_Theorem_. If p1, p2 ... are the _distinct_ primes in then
+
+    φ(n) = n (1-1/p1) (1-1/p2) ...
+
+_Proof_. n/pk of the numbers smaller than n are divisible by pk. Hence the
+number divisible by none of the prime factors is n - n/p1 - n/p2 + n/(p1p2) ...
+where the final term is prevent double counting. Then do some arithmetic that
+is non-obvious to me to get the formula.
 
 ## Fermat's Little Theorem from Euler's therom
 
