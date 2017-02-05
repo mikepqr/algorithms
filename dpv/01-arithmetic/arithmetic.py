@@ -98,6 +98,8 @@ def mod(x, N):
 
 def modexp(x, y, N=0):
     '''Return x^y mod N.'''
+    if y < 0:
+        raise ValueError('y must be non-negative.')
     if max(N, -N) == 1:  # any number mod 1 or mod -1 is 1
         return 0
     if y == 0:

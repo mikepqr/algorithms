@@ -46,14 +46,18 @@ def test_quotient(x, N):
 
 
 @given(st.integers(min_value=-100, max_value=100),
-       st.integers(min_value=0, max_value=100),
+       st.integers(max_value=100),
        st.integers())
 def test_modexp(x, y, N):
-    xyN = arithmetic.modexp(x, y, N)
-    if N == 0:
-        assert xyN == (x**y)
+    if y < 0:
+        with pytest.raises(ValueError):
+            arithmetic.modexp(x, y, N)
     else:
-        assert xyN == (x**y) % N
+        xyN = arithmetic.modexp(x, y, N)
+        if N == 0:
+            assert xyN == (x**y)
+        else:
+            assert xyN == (x**y) % N
 
 
 @given(st.integers(), st.integers())
