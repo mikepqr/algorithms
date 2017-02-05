@@ -51,9 +51,18 @@ def square(x):
 
 
 def divpos(x, y):
-    '''Divide two positive integers.'''
+    '''
+    Divide two non-negative integers, returning quotient and remainder.
+
+    On division of x by zero quotient = 0 and remainder = x.
+    '''
+
+    if x < 0 or y < 0:
+        raise ValueError
     if x == 0:
         return 0, 0
+    if y == 0:
+        return 0, x
     q, r = divpos(halve(x), y)
     q = double(q)
     r = double(r)
@@ -63,6 +72,23 @@ def divpos(x, y):
         r -= y
         q += 1
     return q, r
+
+
+def div(x, y):
+    if x == 0:
+        return 0, 0
+    if y == 0:
+        return 0, x
+
+    q, r = divnonneg(max(-x, x), max(y, -y))
+    if x > 0 and y > 0:
+        return q, r
+    if x < 0 and y > 0:
+        return (-q, 0) if r == 0 else (-q - 1, y - r)
+    if x > 0 and y < 0:
+        return (-q, 0) if r == 0 else (-q - 1, y + r)
+    if x < 0 and y < 0:
+        return q, -r
 
 
 def mod(x, N):
