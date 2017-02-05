@@ -160,20 +160,27 @@ def prime(N, k=100, a=None):
     '''
     Returns True if a number is probably prime, False if it is definitely not.
 
-    If a is none this uses k applications of Fermat's Little Theorem.
+    By definition negative numbers are not prime.
+
+    If a is None this uses k applications of Fermat's Little Theorem.
     Probability of failure (i.e. probability returns True if not a prime) is
     < 1/2^k.
 
     If a is an iterable, it performs the test for those values of a.
     '''
+    if N <= 0:
+        return False
+
     def fermat_test(a):
         return modexp(a, N-1, N) == 1
+
     if a:
         a = [ai for ai in a if ai < N]
     if a is None:
         if k >= N:
             k = N - 1
         a = random.sample(range(1, N), k)
+
     return all(fermat_test(ai) for ai in a)
 
 
