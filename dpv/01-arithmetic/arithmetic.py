@@ -144,11 +144,16 @@ def multinv(a, N):
     (mod N). This does not exist if the greatest common divisor of a and N ≠ 1,
     i.e. if a and N are not relatively prime.
     '''
+    if a == 0:
+        raise ValueError('a must be non-zero.')
+    if N <= 1:
+        raise ValueError('N must greater than 1.')
+
     x, y, d = egcd(a, N)
-    if d == 1:
-        return mod(x, N)
-    else:
+    if d != 1:
         raise ValueError('a and N are not relatively prime.')
+    else:
+        return mod(x, N)
 
 
 def prime(N, k=100, a=None):
