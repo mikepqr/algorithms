@@ -127,7 +127,10 @@ def quotient(x, N):
 def egcd(a, b):
     '''Returns x, y, d such that d = gcd(a, b) and ax + by = d.'''
     if b == 0:
-        return 1, 0, a
+        if a < 0:
+            return -1, 0, -a
+        else:
+            return 1, 0, a
     xprime, yprime, dprime = egcd(b, mod(a, b))
     x = yprime
     y = xprime - mult(quotient(a, b), yprime)
