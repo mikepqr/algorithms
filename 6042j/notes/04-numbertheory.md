@@ -339,7 +339,49 @@ Notice that ∃ q such that rem(y, x) = y - qx. y is a linear combination of a
 and b, and so is x (by I.H.), hence so is rem(y, x). I.H. also gives us that
 gcd(x, y) = gcd(a, b).
 
-## Encrpytion
+## Fundamental theorem of arithmetic
+
+_Lemma_. If p is prime and p|ab then p|a or p|b.
+
+_Proof_. gcd(p, a) must be either 1 or or p, since these are the only numbers
+that divide p.
+
+If gcd(p, a) = p then p|a because a must be a multiple of p.
+
+If gcd(p, b) = 1 then p|b because we showed above that x|yz and gcd(x, y) = 1
+then x|z. ∎
+
+_Lemma_. If p is prime and p|(a1.a2...ak) then p divides one of the ai
+
+_Proof_. This follows by induction on the previous lemma.
+
+_Theorem_. Every positive integer n can be written in a unique way as a product
+of primes:
+
+    n = p1 p2 ... pk    (p1 <= p2 <= ... pk)
+
+Note 1 is not prime, and the product of an empty set of numbers is 1.
+
+_Proof_. It was shown in [previous chapter](03-induction.md) that every
+positive integer can be expressed as the product of primes. We must show this
+product is uniqe.
+
+Proof is by contradiction. Assume there exists an integer that can be written
+as a product of primes two ways. By the well ordering principle there must be a
+smallest such number. Denote this n.
+
+    n = p1 p2 p3 ... pj
+      = q1 q2 q3 ... qk
+
+Now, p1|n hence p1|(q1 q2 q3 ... qk). By previous lemma, p1 divides one of the
+q's. But the qs are prime, so it must be that p1 = q1.
+
+Dividing the first product by p1 and the second product by q1 (the same number)
+yields a number n/p which clearly can also be written as the product of of
+primes in two ways. n < n/p which contradicts the assumption that n is the
+smallest such integer ∎
+
+## Encryption
 
 Given some keys k and a message m
 
@@ -389,6 +431,41 @@ Hence ∃ s, t such that sa + tb = 1
 
 _Defintion_. x is congruent to y, x ≡ y (mod n) iff n|x-y.
 
+## Congruency and remainders
+
+_Theorem_. a ≡ b (mod n) ⇔ rem(a, n) = rem(b, n)
+
+_Proof_. By division theorem
+
+    a = q1 n + r1   0 <= r1 < n
+    b = q2 n + r2   0 <= r2 < n
+
+Hence
+
+    a - b = (q1 - q2)n + (r1 - r2)     -n < r1 - r2 < n
+
+a ≡ b (mod n) ⇔ n|a-b. This can only be true if r1 - r2 is a multiple of n.
+Given the bounds on r1 - r2, this implies r1 = r2 ∎
+
+_Corollary_. a ≡ rem(a, n) (mod n)
+
+## Facts about congruency
+
+ 1. a ≡ a (mod n)
+ 2. a ≡ b (mod n) ⇒ b ≡ a (mod n)
+ 3. a ≡ b (mod n) and b ≡ c (mod n) ⇒ a ≡ c (mod n)
+ 4. a ≡ b (mod n) ⇒ a + c ≡ b + c (mod n)
+ 5. a ≡ b (mod n) ⇒ ac ≡ bc (mod n)
+ 6. a ≡ b (mod n) and c ≡ d (mod n) ⇒ a + c ≡ b + d (mod n)
+ 7. a ≡ b (mod n) and c ≡ d (mod n) ⇒ ac ≡ bd (mod n)
+
+_Proof_. 1-3 follow from the fact that congruence ⇔ equal remainders.
+For 4
+
+    a ≡ b (mod n) ⇔ n|a-b by defintition
+    n|(a+c)-(b+c), so
+    a + c ≡ b + c (mod n) by defintion
+
 ## Multiplicative inverse
 
 _Definition_. The multiplicative inverse of x mod n = x^(-1) is a number in the
@@ -417,6 +494,70 @@ _Proof_.
 
 (last step from the defn of congruency.) Hence the multiplicative inverse of k
 mod n exists.
+
+## Cancellation in modulo
+
+It is not generally true that
+
+    ak ≡ bk mod n ⇒ a ≡ b mod n
+
+However, if n is prime and k is not a multiple of n then it is true, because
+gcd(n, k) = 1. Hence the inverse of k exists. Multiply both sides by it.
+
+_Corollary_. If p is prime and k is not a multiple of p then the sequence
+
+    rem(k, p), rem(2k, p) ... rem((p-1)k, p)
+
+is a permutation of the sequence
+
+    1, 2 ... p-1
+
+_Proof_. Both sequences are length p-1.
+
+ik is not divisible by n for 1 < i <= p-1 because k is not a multiple of p by
+assumption. Hence all the remainders are in the range 1 to p-1 (none of them
+are zero) by the defintion of remainder.
+
+The remainders are all different. This is because:
+
+ - rem(ik, p) ≡ ik mod p
+ - rem(i1 k, p) ≡ rem (i2 k, p) ⇒ i1 ≡ i2 mod p
+ - but no two numbers in the range 1 to p-1 p are congruent mod p
+
+Hence the sequence contains all of the numbers from 1 to p-1 exactly once in
+some order ∎
+
+## Fermat's Little Theorem
+
+_Theorem_. If p is prime and k is not a multiple of p
+
+    k^(p-1) ≡ 1 mod p
+
+_Proof_. From the corollary above
+
+    (p-1)! = rem(k, p) rem(2k, p) ... rem((p-1)k, p)
+
+From the fact that rem(a, n) ≡ a mod n then
+
+    (p-1)! ≡ k 2k ... p-1 k mod p 
+           ≡ k^(p-1) (p-1)! mod p
+
+Now, (p-1)! is not a multiple of p because it contains only numbers smaller
+than p, and therefore can be decomposed into a unique prime factorization made
+up of primes smaller than p. Which is to say, the inverse of (p-1)! mod p
+exists. Hence
+
+    k^(p-1) ≡ 1 mod p   ∎
+
+## Finding multiplicative inverse using Fermat's Little Theorem
+
+If the multiplicative inverse exists, you can always find it Euler's gcd
+algorithm. But if p is prime there is a faster way. By Fermat's Little Theorem:
+
+    k^(p-2) k ≡ 1 mod p
+
+i.e. the inverse of k is simply k^(p-2) mod p. This can be computed by
+successive squaring.
 
 ## Turing's Code v2
 
@@ -545,14 +686,39 @@ Hence
 
     k1 k2 ... kr ≡ k^r k1 k2 ... kr (mod n) 
 
-k1, k2 ... kr are relatively prime to n. Hence their product is too. Hence a
-multiplicative inverse of k1 k2 ... kr exists. Dividing that out:
+k1, k2 ... kr are relatively prime to n. Hence their product is too. This
+follows from does gcd(a, b) = 1 and gcd(a, c) = 1 ⇒ gcd(a, bc) = 1 (see above).
+
+Hence a multiplicative inverse of k1 k2 ... kr exists. Dividing that out:
 
     k^r ≡ 1 mod n 
 
 But r = φ(n) ∎
 
-## Fermat's little theorem
+## Mutliplicative inverses from Euler's theorem
+
+If gcd(k, n) = 1 (i.e. n is not necessarily prime), then it follows from
+Euler's theorem that:
+
+          k^φ(n) ≡ 1 mod n
+    k k^(φ(n)-1) ≡ 1 mod n
+
+Hence k^(φ(n)-1) mod n is the multiplicative inverse of k. φ is not in general
+known, so this is of little practical use.
+
+One shortcut to computing φ(n) is if you know the _distinct_ prime factors of
+n, p1, p2 ... pj. Without proof, it so happens that
+
+    φ(n) = n(1-1/p1)(1-1/p2)...(1-1/pj)
+
+e.g. 300 = 2^2 3 5^2, hence the distinct factors are 2, 3 and 5
+
+    φ(300) = 300(1-1/2)(1-1/3)(1-1/5)
+           = 80
+
+And the inverse of k mod 300, if it exists, is k^79 mod 300.
+
+## Fermat's Little Theorem from Euler's therom
 
 _Theorem_. If p is prime and k is in the range 1, 2 ... p-1 then
 
@@ -636,11 +802,3 @@ recover m by subtracting n from m'(^d) until it is in the range. This is
 simply rem(), i.e.
 
     m = rem(m'^d, n)
-
-## Steps I'm not sure about in above
-
-Why does gcd(a, b) = 1 and gcd(a, c) = 1 imply gcd(a, bc) = 1
-
-Why does rem(ab, n) ≡ ab mod n
-
-If a, b are relatively prime to n, why is ab

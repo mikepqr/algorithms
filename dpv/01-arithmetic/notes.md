@@ -431,7 +431,7 @@ exists.
 
 A prime number N is relatively prime to all non-zero integers.
 
-## Finding multiplicative inverse
+## Finding multiplicative inverse using Euclid
 
 The extended Euclid algorithm gives a way of finding this inverse. It returns
 integers x and y such that ax + Ny = 1.

@@ -28,7 +28,7 @@ algorithms courses and books:
  - [X] Do homework 2
  - [X] Watch lecture 4
  - [X] Watch lecture 5
- - [ ] Finish chapter 4
+ - [X] Finish chapter 4
      - [ ] Make flashcards
  - [ ] Do homework 2
 
