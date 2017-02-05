@@ -153,13 +153,13 @@ of a and b ∎
 
 ## Division theorem
 
-_Theorem_. There exists a unique q and r such that
+_Theorem_. For positive d there exists a unique q and r such that
 
-    b = qa + r
+    n = qd + r
 
-where 0 <= r < a. q = "quotient", r = "remainder".
+where 0 <= r < d. q = "quotient", r = "remainder".
 
-    r = rem(b, a)
+    r = rem(n, d)
 
 ## Smallest linear combination of a and b divides a and b
 
