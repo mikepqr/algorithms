@@ -110,9 +110,11 @@ def modexp(x, y, N=0):
 
 
 def gcd(a, b):
-    '''Return gcd(a, b) using Euclid's algorithm.'''
+    '''
+    Return gcd(a, b) using Euclid's algorithm.
+    '''
     if b == 0:
-        return a
+        return max(a, -a)
     else:
         return gcd(b, mod(a, b))
 
