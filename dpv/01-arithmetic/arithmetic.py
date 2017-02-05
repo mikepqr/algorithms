@@ -93,10 +93,7 @@ def div(x, y):
 
 def mod(x, N):
     '''Return x mod N.'''
-    if x < 0:
-        return N - divpos(-x, N)[1]
-    else:
-        return divpos(x, N)[1]
+    return div(x, N)[1]
 
 
 def modexp(x, y, N=0):
@@ -120,7 +117,7 @@ def gcd(a, b):
 
 def quotient(x, N):
     '''Return x//N'''
-    return divpos(x, N)[0]
+    return div(x, N)[0]
 
 
 def egcd(a, b):
