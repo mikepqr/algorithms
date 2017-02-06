@@ -38,10 +38,9 @@ algorithms courses and books:
      - [ ] Make flashcards
  - [X] Do homework 0
  - [X] Read chapter 1
-     - [ ] Proof that product of intersection of prime factors is gcd
-     - [ ] Proof that product of union of prime factors is lcm
-     - [ ] Proof that gcd . lcm = ab.
      - [ ] Finish flashcards
  - [X] Do implementations from chapter 1
  - [X] Write tests for implementations from chapter 1
- - [ ] Do homework 1
+ - [X] Do most of homework 1
+ - [ ] Do exercise 1.37 (Chinese remainder theorem)
+ - [ ] Do ex 1.45 and 1.46 (digital signatures)

@@ -730,44 +730,87 @@ Hence if p and q divide (x^(ed) - x) then N = pq also divides it. Hence
     Every integer n >= 2 can be expressed as a product of primes and this
     factorization is unique up to rearrangement of the factors.
 
+Define standard notation
+
+    a = p1^a1 p2^a2 ... pn^an
+
 ## Greatest common divisor by shared primes
 
-Let
+_Lemma_. Using notation above for prime factorization
 
-    A = p1^k1 p2^k2 ... pn^kn
-    B = p1^j1 p2^j2 ... pn^jn
+    x|y ⇔ xi <= yi for 1 <= i <= n
+
+_Proof_. By fundamental theorem of arithmetic, x divides y if and only if the
+primes it comprises all appear in y.
+
+_Theorem_. Let
+
+    a = p1^a1 p2^a2 ... pn^an
+    b = p1^b1 p2^b2 ... pn^bn
 
 where p1..pn are primes and ki >= 0. (This is true ∀ A, B by fundamental
 theorem.) Then
 
-    gcd(A, B) = product(i=1, n) pi^min(ki,ji)
+    gcd(a, b) = product(i=1, n) pi^min(ai, bi)
 
 Or informally:
 
-    gcd(A, B) is the product of their shared prime factors
+    gcd(a, b) is the product of their shared prime factors
 
-For example:
+_Proof_. If some number d|a then by lemma above 
+
+    di <= ai for 1 <= i <= n
+
+Similarly if d|b then by lemma above 
+
+    di <= bi for 1 <= i <= n
+    
+Hence if d|a and d|b then 
+
+    di <= min(ai, bi) for 1 <= i <=n.
+
+Hence the biggest number that divides both a and b, i.e. gcd(a, b) is the
+maximum possible d, i.e. when the equality holds:
+
+    di = min(ai, bi) ∎
+
+_Example_.
 
     360 = 2^3 . 3^2 . 5
     756 = 2^2 . 3^3 . 7
 
-2^2 3^2 = 36 is in both these lists. It's therefore a common divisor and by the
-definition of gcd.
+    gcd(360, 756) = 2^2 3^2
+                  = 36
 
-    gcd(360, 756) >= 36
-
-But the bigger factors of 360 (any product of its primes) must be composed of
-primes that are not factors of 756. 36 is therefore the _greatest_ common
-divisor.
-
-This is not a fast method to find gcd(A, B) since factorization is expensive.
+This is not a fast method to find gcd(a, b) since factorization is expensive.
 But it allows you to derive an algorithm to compute the lcm.
 
 ## Lowest common multiple
 
 Defined as the smallest positive m such that a|m and b|m.
 
-Found by taking the product of the union of prime factors, e.g.
+_Theorem_. 
+
+    lcm(a, b) = product(i=1, n) pi^max(ai, bi)
+
+_Proof_. If a|d then by lemma above
+
+    ai <= di for 1 <= i <= n
+
+Similarly if b|d then
+
+    bi <= di for 1 <= i <= n
+    
+Hence if d|a and d|b then 
+
+    di >= max(ai, bi) for 1 <= i <=n.
+
+The smallest possible number that both a and b divide, i.e. lcm(a, b) is given
+by di when the equality holds:
+
+    di = max(ai, bi ∎
+
+_Example_. Found by taking the product of the union of prime factors, e.g.
 
     360 = 2^3 . 3^2 . 5
     756 = 2^2 . 3^3 . 7
