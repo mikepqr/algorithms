@@ -12,7 +12,7 @@ def splitnums(x, y):
     if x < 2 or y < 2:
         raise ValueError('Both x and y must be at least 2 bits long')
     sx, sy = bin(x)[2:], bin(y)[2:]
-    n = min(len(sx), len(sy))//2
+    n = min(len(sx), len(sy)) >> 1
     return (int(sx[0:-n], 2), int(sx[-n:], 2),
             int(sy[0:-n], 2), int(sy[-n:], 2), n)
 
