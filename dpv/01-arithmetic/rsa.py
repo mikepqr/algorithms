@@ -1,7 +1,7 @@
 import arithmetic
+import sys
 
-LARGEST_UNICODE_POINT = 0x10FFFF
-cpsize = len(str(LARGEST_UNICODE_POINT))  # codepoint size
+cpsize = len(str(sys.maxunicode))  # codepoint size
 
 
 def twoprimes(p=None, q=None, n=100):
