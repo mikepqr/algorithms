@@ -176,12 +176,12 @@ def prime(N, k=100, a=None):
     def fermat_test(a):
         return modexp(a, N-1, N) == 1
 
-    if a:
-        a = [ai for ai in a if ai < N]
     if a is None:
         if k >= N:
             k = N - 1
         a = random.sample(range(1, N), k)
+    else:
+        a = [ai for ai in a if ai < N]
 
     return all(fermat_test(ai) for ai in a)
 
