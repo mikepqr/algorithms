@@ -1,6 +1,6 @@
 def splitnums(x, y):
     '''
-    Split two numbers.
+    Split two numbers that are at least two bits long.
 
     Returns xl, xr, yl, yr, n such that
 
@@ -38,9 +38,7 @@ def multnonneg(x, y):
     p2 = multnonneg(xr, yr)
     p3 = multnonneg(xl + xr, yl + yr)
 
-    return ((p1 << (n << 1)) +
-            ((p3 - p1 - p2) << n) +
-            p2)
+    return (p1 << (n << 1)) + ((p3 - p1 - p2) << n) + p2
 
 
 def mult(x, y):
