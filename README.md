@@ -1,5 +1,7 @@
 # Algorithms
 
+[![Build Status](https://travis-ci.org/williamsmj/algorithms.svg?branch=master)](https://travis-ci.org/williamsmj/algorithms)
+
 Notes, code and problem solutions for the following discrete mathematics and
 algorithms courses and books:
 
